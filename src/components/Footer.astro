@@ -1,0 +1,30 @@
+---
+import { site } from '../data/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+	<p class="copy">© {year} {site.name}</p>
+	<ThemeToggle />
+</footer>
+
+<style>
+	.footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: auto;
+		padding: 1.25rem 0 1.5rem;
+		border-top: 1px solid var(--hairline);
+	}
+
+	.copy {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.8rem;
+		letter-spacing: 0.02em;
+	}
+</style>

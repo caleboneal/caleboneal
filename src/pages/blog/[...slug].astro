@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { fade } from 'astro:transitions';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -12,6 +13,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const titleFade = fade({ duration: '110ms' });
 
 const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 	year: 'numeric',
@@ -25,7 +27,12 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 	<article class="post">
 		<a class="back" href="/">← Back</a>
 		<header class="header">
-			<h1>{post.data.title}</h1>
+			<h1
+				transition:name={`post-title-${post.id}`}
+				transition:animate={titleFade}
+			>
+				{post.data.title}
+			</h1>
 			<time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
 		</header>
 		<div class="content">
@@ -36,7 +43,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 
 <style>
 	.post {
-		padding: 2.5rem 0 4.5rem;
+		padding: 2.5rem 0 2.5rem;
 		max-width: 42rem;
 	}
 

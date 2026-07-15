@@ -27,8 +27,6 @@
 </button>
 
 <script>
-	const toggle = document.getElementById('theme-toggle');
-
 	function getPreferredTheme() {
 		const stored = localStorage.getItem('theme');
 		if (stored === 'light' || stored === 'dark') return stored;
@@ -40,13 +38,20 @@
 		localStorage.setItem('theme', theme);
 	}
 
-	setTheme(getPreferredTheme());
+	function bindThemeToggle() {
+		const toggle = document.getElementById('theme-toggle');
+		if (!toggle || toggle.dataset.bound === 'true') return;
+		toggle.dataset.bound = 'true';
+		toggle.addEventListener('click', () => {
+			const next =
+				document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+			setTheme(next);
+		});
+	}
 
-	toggle?.addEventListener('click', () => {
-		const next =
-			document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-		setTheme(next);
-	});
+	setTheme(getPreferredTheme());
+	bindThemeToggle();
+	document.addEventListener('astro:page-load', bindThemeToggle);
 </script>
 
 <style>

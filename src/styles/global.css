@@ -95,12 +95,21 @@ button {
 
 .frame {
 	position: relative;
+	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
 	width: min(100%, 72rem);
 	margin: 0 auto;
 	padding: 0 clamp(1.25rem, 4vw, 2.5rem);
 	border-left: 1px solid var(--hairline);
 	border-right: 1px solid var(--hairline);
+}
+
+.page {
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
 
 .frame::after {
@@ -124,4 +133,34 @@ button {
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
+}
+
+/* Snappy title morph; keep root as a simple fade (no size morph / margin jump) */
+::view-transition-group(*) {
+	animation-duration: 160ms;
+	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-group(root) {
+	animation: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 110ms;
+	animation-timing-function: ease-out;
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+	animation-duration: 110ms;
+	animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
 }
