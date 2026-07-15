@@ -7,6 +7,7 @@ export const site = {
 	links: {
 		x: '#',
 		linkedin: '#',
+		github: '#',
 		resume: '#',
 	},
 } as const;
