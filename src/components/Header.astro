@@ -1,0 +1,24 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="header">
+	<div class="actions">
+		<ThemeToggle />
+	</div>
+</header>
+
+<style>
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 1.35rem 0;
+	}
+
+	.actions {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+	}
+</style>

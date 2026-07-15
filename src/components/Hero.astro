@@ -1,0 +1,169 @@
+---
+import { site } from '../data/site';
+import SocialLinks from './SocialLinks.astro';
+---
+
+<section class="hero">
+	<div class="glow" aria-hidden="true"></div>
+	<svg class="wireframe" viewBox="0 0 480 320" fill="none" aria-hidden="true">
+		<!-- Isometric abstract CO wireframe mark -->
+		<g class="wires" stroke="currentColor" stroke-width="1" stroke-linejoin="round">
+			<!-- Base platform -->
+			<path d="M120 220 L240 280 L360 220 L240 160 Z"></path>
+			<path d="M120 220 L120 250 L240 310 L240 280 Z"></path>
+			<path d="M360 220 L360 250 L240 310 L240 280 Z"></path>
+
+			<!-- Left tower -->
+			<path d="M150 190 L200 215 L200 145 L150 120 Z"></path>
+			<path d="M200 215 L250 190 L250 120 L200 145 Z"></path>
+			<path d="M150 120 L200 145 L250 120 L200 95 Z"></path>
+			<path d="M175 133 L225 158"></path>
+			<path d="M175 158 L225 183"></path>
+			<path d="M162 140 L212 165"></path>
+			<path d="M187 148 L237 173"></path>
+
+			<!-- Right tower -->
+			<path d="M250 190 L300 215 L300 145 L250 120 Z"></path>
+			<path d="M300 215 L350 190 L350 120 L300 145 Z"></path>
+			<path d="M250 120 L300 145 L350 120 L300 95 Z"></path>
+			<path d="M275 133 L325 158"></path>
+			<path d="M275 158 L325 183"></path>
+			<path d="M262 140 L312 165"></path>
+			<path d="M287 148 L337 173"></path>
+
+			<!-- Bridge / middle arch -->
+			<path d="M200 145 L240 165 L280 145"></path>
+			<path d="M200 175 L240 195 L280 175"></path>
+			<path d="M240 165 L240 195"></path>
+			<path d="M220 155 L220 185"></path>
+			<path d="M260 155 L260 185"></path>
+
+			<!-- Upper accents -->
+			<path d="M200 95 L240 115 L300 95"></path>
+			<path d="M220 75 L240 85 L280 65"></path>
+			<path d="M240 85 L240 115"></path>
+			<path d="M200 95 L220 75"></path>
+			<path d="M300 95 L280 65"></path>
+
+			<!-- Guide lines -->
+			<path d="M80 180 L150 145" opacity="0.45"></path>
+			<path d="M400 180 L350 145" opacity="0.45"></path>
+			<path d="M240 40 L240 85" opacity="0.35"></path>
+			<path d="M100 260 L150 235" opacity="0.35"></path>
+			<path d="M380 260 L330 235" opacity="0.35"></path>
+		</g>
+	</svg>
+
+	<div class="identity">
+		<h1 class="name">{site.name}</h1>
+		<div class="cta">
+			<SocialLinks />
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		min-height: clamp(26rem, 68vh, 38rem);
+		padding: 2rem 0 1.75rem;
+		overflow: hidden;
+		border-bottom: 1px solid var(--hairline);
+	}
+
+	.glow {
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(ellipse 65% 50% at 42% 36%, var(--hero-glow), transparent 68%),
+			radial-gradient(ellipse 55% 45% at 62% 48%, var(--hero-glow-soft), transparent 70%),
+			radial-gradient(ellipse 90% 35% at 50% 100%, var(--accent-rose-soft), transparent 70%);
+		pointer-events: none;
+	}
+
+	.wireframe {
+		position: absolute;
+		left: 50%;
+		top: 42%;
+		width: min(36rem, 95%);
+		transform: translate(-50%, -50%);
+		color: var(--wire);
+		pointer-events: none;
+		animation: wire-drift 12s ease-in-out infinite alternate;
+	}
+
+	.identity {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1.5rem 2rem;
+		width: 100%;
+		animation: rise-in 0.85s ease both;
+	}
+
+	.name {
+		margin: 0;
+		font-size: clamp(1.85rem, 4.5vw, 3rem);
+		font-weight: 700;
+		letter-spacing: -0.035em;
+		line-height: 1.1;
+		text-align: left;
+	}
+
+	.cta {
+		flex-shrink: 0;
+		animation: rise-in 0.95s ease 0.08s both;
+	}
+
+	@keyframes rise-in {
+		from {
+			opacity: 0;
+			transform: translateY(0.75rem);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes wire-drift {
+		from {
+			transform: translate(-50%, -50%) translateY(0) scale(1);
+			opacity: 0.85;
+		}
+		to {
+			transform: translate(-50%, -50%) translateY(-0.4rem) scale(1.01);
+			opacity: 1;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.identity {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1.15rem;
+		}
+
+		.hero {
+			min-height: clamp(22rem, 58vh, 32rem);
+			padding-bottom: 1.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.wireframe,
+		.identity,
+		.cta {
+			animation: none;
+		}
+
+		.wireframe {
+			transform: translate(-50%, -50%);
+		}
+	}
+</style>

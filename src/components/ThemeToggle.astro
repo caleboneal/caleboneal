@@ -1,0 +1,81 @@
+---
+---
+
+<button
+	type="button"
+	class="theme-toggle"
+	id="theme-toggle"
+	aria-label="Toggle color theme"
+>
+	<svg class="icon sun" viewBox="0 0 24 24" aria-hidden="true">
+		<circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+		<path
+			d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.05 5.05l1.55 1.55M17.4 17.4l1.55 1.55M18.95 5.05l-1.55 1.55M6.6 17.4l-1.55 1.55"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			stroke-linecap="round"></path>
+	</svg>
+	<svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true">
+		<path
+			d="M20 13.4A7.5 7.5 0 0 1 10.6 4 7.8 7.8 0 1 0 20 13.4Z"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			stroke-linejoin="round"></path>
+	</svg>
+</button>
+
+<script>
+	const toggle = document.getElementById('theme-toggle');
+
+	function getPreferredTheme() {
+		const stored = localStorage.getItem('theme');
+		if (stored === 'light' || stored === 'dark') return stored;
+		return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+	}
+
+	function setTheme(theme: string) {
+		document.documentElement.setAttribute('data-theme', theme);
+		localStorage.setItem('theme', theme);
+	}
+
+	setTheme(getPreferredTheme());
+
+	toggle?.addEventListener('click', () => {
+		const next =
+			document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		setTheme(next);
+	});
+</script>
+
+<style>
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 999px;
+		color: var(--muted);
+		transition: color 0.2s ease, background-color 0.2s ease;
+	}
+
+	.theme-toggle:hover {
+		color: var(--accent-orange);
+		background: var(--accent-orange-soft);
+	}
+
+	.icon {
+		width: 1.15rem;
+		height: 1.15rem;
+	}
+
+	html[data-theme='dark'] .sun {
+		display: none;
+	}
+
+	html[data-theme='light'] .moon {
+		display: none;
+	}
+</style>
