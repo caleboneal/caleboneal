@@ -149,90 +149,92 @@ const orbits = [
 
 <section class="hero" transition:animate="none">
 	<div class="glow" aria-hidden="true"></div>
-	<svg class="orbits" viewBox="0 0 640 520" fill="none" aria-hidden="true">
-		<defs>
-			<linearGradient id="orbit-warm" x1="80" y1="60" x2="560" y2="360" gradientUnits="userSpaceOnUse">
-				<stop offset="0%" stop-color="var(--accent-orange)"></stop>
-				<stop offset="55%" stop-color="var(--accent-rose)"></stop>
-				<stop offset="100%" stop-color="var(--accent-orange)"></stop>
-			</linearGradient>
-			<linearGradient id="orbit-cool" x1="520" y1="40" x2="120" y2="380" gradientUnits="userSpaceOnUse">
-				<stop offset="0%" stop-color="var(--accent-rose)"></stop>
-				<stop offset="100%" stop-color="var(--accent-orange)"></stop>
-			</linearGradient>
-			<!-- Grain applied only to painted orbit pixels -->
-			<filter
-				id="orbit-grain"
-				x="-20%"
-				y="-20%"
-				width="140%"
-				height="140%"
-				color-interpolation-filters="sRGB"
-			>
-				<feTurbulence
-					type="fractalNoise"
-					baseFrequency="1.15"
-					numOctaves="3"
-					stitchTiles="stitch"
-					result="noise"></feTurbulence>
-				<feColorMatrix
-					in="noise"
-					type="matrix"
-					values="0 0 0 0 0.55
+	<div class="orbit-stage" aria-hidden="true">
+		<svg class="orbits" viewBox="0 0 640 520" fill="none">
+			<defs>
+				<linearGradient id="orbit-warm" x1="80" y1="60" x2="560" y2="360" gradientUnits="userSpaceOnUse">
+					<stop offset="0%" stop-color="var(--accent-orange)"></stop>
+					<stop offset="55%" stop-color="var(--accent-rose)"></stop>
+					<stop offset="100%" stop-color="var(--accent-orange)"></stop>
+				</linearGradient>
+				<linearGradient id="orbit-cool" x1="520" y1="40" x2="120" y2="380" gradientUnits="userSpaceOnUse">
+					<stop offset="0%" stop-color="var(--accent-rose)"></stop>
+					<stop offset="100%" stop-color="var(--accent-orange)"></stop>
+				</linearGradient>
+				<!-- Grain applied only to painted orbit pixels -->
+				<filter
+					id="orbit-grain"
+					x="-20%"
+					y="-20%"
+					width="140%"
+					height="140%"
+					color-interpolation-filters="sRGB"
+				>
+					<feTurbulence
+						type="fractalNoise"
+						baseFrequency="1.15"
+						numOctaves="3"
+						stitchTiles="stitch"
+						result="noise"></feTurbulence>
+					<feColorMatrix
+						in="noise"
+						type="matrix"
+						values="0 0 0 0 0.55
                   0 0 0 0 0.35
                   0 0 0 0 0.28
                   0 0 0 0.55 0"
-					result="mono"></feColorMatrix>
-				<feBlend in="SourceGraphic" in2="mono" mode="overlay" result="grained"></feBlend>
-				<feComposite in="grained" in2="SourceGraphic" operator="in"></feComposite>
-			</filter>
-		</defs>
+						result="mono"></feColorMatrix>
+					<feBlend in="SourceGraphic" in2="mono" mode="overlay" result="grained"></feBlend>
+					<feComposite in="grained" in2="SourceGraphic" operator="in"></feComposite>
+				</filter>
+			</defs>
 
-		<g class="orbit-field" filter="url(#orbit-grain)">
-			{
-				orbits.map((orbit) => (
-					<g
-						class:list={['orbit', `orbit-${orbit.id}`, { reverse: orbit.reverse }]}
-						style={`--orbit-duration: ${orbit.duration}; --orbit-opacity: ${orbit.opacity}; --orbit-rotate: ${orbit.rotate}deg;`}
-					>
-						<circle
-							cx={cx}
-							cy={cy}
-							r={orbit.r}
-							stroke={`url(#orbit-${orbit.gradient})`}
-							stroke-width={orbit.width}
-							stroke-dasharray={orbit.dash}
-							stroke-linecap="round"
-							fill="none"
-							class="trail"
-						/>
-						{orbit.dots.map((dot) => {
-							const { x, y } = point(orbit.r, dot.deg);
-							return dot.kind === 'solid' ? (
-								<circle
-									cx={x}
-									cy={y}
-									r={dot.size}
-									fill={`url(#orbit-${orbit.gradient})`}
-									class="marker solid"
-								/>
-							) : (
-								<circle
-									cx={x}
-									cy={y}
-									r={dot.size}
-									fill="none"
-									stroke={`url(#orbit-${orbit.gradient})`}
-									stroke-width="1.15"
-									class="marker hollow"
-								/>
-							);
-						})}
-					</g>
-				))
-			}
-		</g>
-	</svg>
+			<g class="orbit-field" filter="url(#orbit-grain)">
+				{
+					orbits.map((orbit) => (
+						<g
+							class:list={['orbit', `orbit-${orbit.id}`, { reverse: orbit.reverse }]}
+							style={`--orbit-duration: ${orbit.duration}; --orbit-opacity: ${orbit.opacity}; --orbit-rotate: ${orbit.rotate}deg;`}
+						>
+							<circle
+								cx={cx}
+								cy={cy}
+								r={orbit.r}
+								stroke={`url(#orbit-${orbit.gradient})`}
+								stroke-width={orbit.width}
+								stroke-dasharray={orbit.dash}
+								stroke-linecap="round"
+								fill="none"
+								class="trail"
+							/>
+							{orbit.dots.map((dot) => {
+								const { x, y } = point(orbit.r, dot.deg);
+								return dot.kind === 'solid' ? (
+									<circle
+										cx={x}
+										cy={y}
+										r={dot.size}
+										fill={`url(#orbit-${orbit.gradient})`}
+										class="marker solid"
+									/>
+								) : (
+									<circle
+										cx={x}
+										cy={y}
+										r={dot.size}
+										fill="none"
+										stroke={`url(#orbit-${orbit.gradient})`}
+										stroke-width="1.15"
+										class="marker hollow"
+									/>
+								);
+							})}
+						</g>
+					))
+				}
+			</g>
+		</svg>
+	</div>
 
 	<div class="identity">
 		<h1 class="name">{site.name}</h1>
@@ -264,6 +266,13 @@ const orbits = [
 		z-index: 0;
 	}
 
+	.orbit-stage {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
 	.orbits {
 		position: absolute;
 		left: 50%;
@@ -271,8 +280,6 @@ const orbits = [
 		width: min(38rem, 96%);
 		max-height: 94%;
 		transform: translate(-50%, -50%);
-		pointer-events: none;
-		z-index: 0;
 	}
 
 	.orbit {
@@ -325,22 +332,48 @@ const orbits = [
 		}
 	}
 
-	@media (max-width: 640px) {
-		.identity {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 1.15rem;
+	@media (max-width: 768px) {
+		.hero {
+			justify-content: flex-start;
+			min-height: 0;
+			padding: 1rem 0 1.35rem;
+			gap: 0.35rem;
 		}
 
-		.hero {
-			min-height: clamp(19rem, 46vh, 26rem);
-			padding: 1.15rem 0;
+		.glow {
+			background:
+				radial-gradient(circle 55% at 50% 28%, var(--hero-glow), transparent 72%),
+				radial-gradient(circle 40% at 55% 32%, var(--hero-glow-soft), transparent 70%);
+		}
+
+		.orbit-stage {
+			position: relative;
+			inset: auto;
+			display: grid;
+			place-items: center;
+			width: 100%;
+			height: clamp(14rem, 42vw, 18rem);
+			flex-shrink: 0;
 		}
 
 		.orbits {
-			width: min(30rem, 100%);
-			max-height: 94%;
-			top: 50%;
+			position: relative;
+			left: auto;
+			top: auto;
+			width: min(22rem, 88%);
+			max-height: 100%;
+			transform: none;
+		}
+
+		.identity {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+			padding-top: 0.15rem;
+		}
+
+		.name {
+			font-size: clamp(1.7rem, 8vw, 2.35rem);
 		}
 	}
 
