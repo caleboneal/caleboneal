@@ -8,6 +8,7 @@ export const site = {
 		x: 'https://x.com/CalebONeal07',
 		linkedin: 'https://linkedin.com/in/caleboneal2007',
 		github: 'https://github.com/caleboneal',
+		email: 'mailto:caleb@caleboneal.dev',
 		resume: '/resume.pdf',
 	},
 } as const;

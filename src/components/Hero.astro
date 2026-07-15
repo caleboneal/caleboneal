@@ -3,7 +3,7 @@ import { site } from '../data/site';
 import SocialLinks from './SocialLinks.astro';
 
 const cx = 320;
-const cy = 198;
+const cy = 260;
 
 /** Point on a circle at degrees (0 = right, CCW). */
 function point(radius: number, deg: number) {
@@ -149,7 +149,7 @@ const orbits = [
 
 <section class="hero" transition:animate="none">
 	<div class="glow" aria-hidden="true"></div>
-	<svg class="orbits" viewBox="0 0 640 420" fill="none" aria-hidden="true">
+	<svg class="orbits" viewBox="0 0 640 520" fill="none" aria-hidden="true">
 		<defs>
 			<linearGradient id="orbit-warm" x1="80" y1="60" x2="560" y2="360" gradientUnits="userSpaceOnUse">
 				<stop offset="0%" stop-color="var(--accent-orange)"></stop>
@@ -268,14 +268,15 @@ const orbits = [
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		width: min(40rem, 112%);
+		width: min(38rem, 96%);
+		max-height: 94%;
 		transform: translate(-50%, -50%);
 		pointer-events: none;
 		z-index: 0;
 	}
 
 	.orbit {
-		transform-origin: 320px 198px;
+		transform-origin: 320px 260px;
 		opacity: var(--orbit-opacity);
 		animation: orbit-spin var(--orbit-duration) linear infinite;
 	}
@@ -337,7 +338,8 @@ const orbits = [
 		}
 
 		.orbits {
-			width: min(32rem, 130%);
+			width: min(30rem, 100%);
+			max-height: 94%;
 			top: 50%;
 		}
 	}

@@ -4,19 +4,19 @@
 	--fg: #111111;
 	--muted: #6b6b6b;
 	--hairline: rgba(17, 17, 17, 0.12);
-	--wire: rgba(194, 98, 62, 0.22);
-	--accent-orange: #e07a3a;
-	--accent-rose: #c45a6a;
-	--accent-orange-soft: rgba(224, 122, 58, 0.14);
-	--accent-rose-soft: rgba(196, 90, 106, 0.12);
+	--wire: rgba(196, 90, 106, 0.2);
+	--accent-orange: #c45a6a;
+	--accent-rose: #e07a3a;
+	--accent-orange-soft: rgba(196, 90, 106, 0.12);
+	--accent-rose-soft: rgba(224, 122, 58, 0.14);
 	--pill-bg: transparent;
 	--pill-fg: #111111;
 	--pill-border: rgba(17, 17, 17, 0.28);
 	--pill-solid-bg: var(--accent-orange);
 	--pill-solid-fg: #fff8f3;
-	--hero-glow: rgba(224, 122, 58, 0.11);
-	--hero-glow-soft: rgba(196, 90, 106, 0.09);
-	--surface-hover: rgba(196, 90, 106, 0.08);
+	--hero-glow: rgba(196, 90, 106, 0.1);
+	--hero-glow-soft: rgba(224, 122, 58, 0.09);
+	--surface-hover: rgba(224, 122, 58, 0.08);
 	color-scheme: light;
 }
 
