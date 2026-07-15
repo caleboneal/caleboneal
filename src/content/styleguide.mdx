@@ -1,0 +1,88 @@
+---
+/**
+ * Markdown kitchen sink for styling blog prose.
+ * Not part of the blog content collection — visit /styleguide
+ */
+---
+
+A paragraph with **bold**, _italic_, ~~strikethrough~~, `inline code`, and a [link](https://caleboneal.dev).
+
+Another paragraph for spacing checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+
+## Lists
+
+Unordered:
+
+- First item
+- Second item with a [link](https://example.com)
+- Third item
+  - Nested one
+  - Nested two
+- Fourth item
+
+Ordered:
+
+1. Step one
+2. Step two
+3. Step three
+   1. Nested A
+   2. Nested B
+4. Step four
+
+## Blockquote
+
+> This is a blockquote used for callouts or quotations.
+>
+> It can span multiple paragraphs when needed.
+
+## Code
+
+Inline code looks like `const answer = 42`.
+
+Fenced block:
+
+```ts
+export function greet(name: string) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet("world"));
+```
+
+Shell example:
+
+```bash
+npm run build
+wrangler deploy
+```
+
+## Table
+
+| Element | Markdown | Notes |
+| --- | --- | --- |
+| Link | `[text](url)` | Accent color |
+| Code | `` `code` `` | Monospace |
+| Bold | `**text**` | Strong weight |
+
+## Horizontal rule
+
+Above the rule.
+
+---
+
+Below the rule.
+
+## Image
+
+![Gradient placeholder](https://placehold.co/800x420/1a1218/e8925c?text=Blog+image)
+
+## Mixed emphasis
+
+You can combine **bold with _italic_** and `code` in one sentence — useful for denser technical writing.

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { fade } from 'astro:transitions';
 import Layout from '../../layouts/Layout.astro';
+import BlogArticle from '../../components/BlogArticle.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -14,101 +15,13 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const titleFade = fade({ duration: '110ms' });
-
-const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
-	year: 'numeric',
-	month: 'long',
-	day: 'numeric',
-	timeZone: 'UTC',
-});
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-	<article class="post">
-		<a class="back" href="/">← Back</a>
-		<header class="header">
-			<h1
-				transition:name={`post-title-${post.id}`}
-				transition:animate={titleFade}
-			>
-				{post.data.title}
-			</h1>
-			<time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
-		</header>
-		<div class="content">
-			<Content />
-		</div>
-	</article>
+	<BlogArticle title={post.data.title} date={post.data.pubDate}>
+		<h1 slot="title" transition:name={`post-title-${post.id}`} transition:animate={titleFade}>
+			{post.data.title}
+		</h1>
+		<Content />
+	</BlogArticle>
 </Layout>
-
-<style>
-	.post {
-		padding: 2.5rem 0 2.5rem;
-		max-width: 42rem;
-	}
-
-	.back {
-		display: inline-block;
-		margin-bottom: 2rem;
-		color: var(--muted);
-		font-size: 0.875rem;
-		transition: color 0.2s ease;
-	}
-
-	.back:hover {
-		color: var(--accent-rose);
-	}
-
-	.header {
-		margin-bottom: 2rem;
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid var(--hairline);
-	}
-
-	.header h1 {
-		margin: 0 0 0.75rem;
-		font-size: clamp(1.85rem, 4vw, 2.6rem);
-		font-weight: 700;
-		letter-spacing: -0.03em;
-		line-height: 1.15;
-	}
-
-	.header time {
-		color: var(--muted);
-		font-size: 0.9rem;
-	}
-
-	.content :global(p) {
-		margin: 0 0 1.15rem;
-		color: color-mix(in srgb, var(--fg) 88%, var(--muted));
-		font-size: 1.05rem;
-		line-height: 1.7;
-	}
-
-	.content :global(p:last-child) {
-		margin-bottom: 0;
-	}
-
-	.content :global(a) {
-		color: var(--accent-orange);
-		text-decoration: underline;
-		text-underline-offset: 0.15em;
-	}
-
-	.content :global(a:hover) {
-		color: var(--accent-rose);
-	}
-
-	.content :global(h2),
-	.content :global(h3) {
-		margin: 2rem 0 0.75rem;
-		letter-spacing: -0.02em;
-	}
-
-	.content :global(ul),
-	.content :global(ol) {
-		margin: 0 0 1.15rem;
-		padding-left: 1.25rem;
-		line-height: 1.7;
-	}
-</style>

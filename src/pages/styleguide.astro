@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogArticle from '../components/BlogArticle.astro';
+import StyleguideContent from '../content/styleguide.mdx';
+
+const title = 'Markdown styleguide';
+const description = 'Kitchen-sink markdown samples for styling blog post prose.';
+---
+
+<Layout title={title} description={description}>
+	<BlogArticle title={title} date={new Date('2026-07-15')}>
+		<StyleguideContent />
+	</BlogArticle>
+</Layout>
