@@ -1,13 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { fade } from 'astro:transitions';
 
 interface Props {
 	posts: CollectionEntry<'blog'>[];
 }
 
 const { posts } = Astro.props;
-const titleFade = fade({ duration: '110ms' });
 
 function formatDate(date: Date) {
 	return date.toLocaleDateString('en-US', {
@@ -27,13 +25,7 @@ function formatDate(date: Date) {
 			{posts.map((post) => (
 				<li>
 					<a class="row" href={`/blog/${post.id}/`}>
-						<span
-							class="title"
-							transition:name={`post-title-${post.id}`}
-							transition:animate={titleFade}
-						>
-							{post.data.title}
-						</span>
+						<span class="title">{post.data.title}</span>
 						<time class="date" datetime={post.data.pubDate.toISOString()}>
 							{formatDate(post.data.pubDate)}
 						</time>
@@ -61,11 +53,10 @@ function formatDate(date: Date) {
 		justify-content: space-between;
 		gap: 1.5rem;
 		padding: 1.35rem 0;
-		transition: color 0.2s ease;
 	}
 
-	.row:hover .title {
-		color: var(--accent-orange);
+	.row:hover .date {
+		color: var(--fg);
 	}
 
 	.title {
@@ -73,7 +64,7 @@ function formatDate(date: Date) {
 		font-weight: 500;
 		line-height: 1.35;
 		letter-spacing: -0.01em;
-		transition: color 0.2s ease;
+		color: var(--fg);
 		width: fit-content;
 		max-width: 100%;
 	}
@@ -83,6 +74,7 @@ function formatDate(date: Date) {
 		color: var(--muted);
 		font-size: 0.875rem;
 		white-space: nowrap;
+		transition: color 0.2s ease;
 	}
 
 	.empty {

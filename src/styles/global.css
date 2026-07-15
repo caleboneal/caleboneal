@@ -135,36 +135,6 @@ button {
 	border: 0;
 }
 
-/* Snappy title morph; keep root as a simple fade (no size morph / margin jump) */
-::view-transition-group(*) {
-	animation-duration: 160ms;
-	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-::view-transition-group(root) {
-	animation: none;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-	animation-duration: 110ms;
-	animation-timing-function: ease-out;
-}
-
-::view-transition-old(*),
-::view-transition-new(*) {
-	animation-duration: 110ms;
-	animation-timing-function: ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	::view-transition-group(*),
-	::view-transition-old(*),
-	::view-transition-new(*) {
-		animation: none !important;
-	}
-}
-
 /* Dual Shiki themes — follow site data-theme (not OS preference alone) */
 .astro-code {
 	margin: 0;

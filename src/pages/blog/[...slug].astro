@@ -1,6 +1,5 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { fade } from 'astro:transitions';
 import Layout from '../../layouts/Layout.astro';
 import BlogArticle from '../../components/BlogArticle.astro';
 
@@ -14,14 +13,10 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const titleFade = fade({ duration: '110ms' });
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
 	<BlogArticle title={post.data.title} date={post.data.pubDate}>
-		<h1 slot="title" transition:name={`post-title-${post.id}`} transition:animate={titleFade}>
-			{post.data.title}
-		</h1>
 		<Content />
 	</BlogArticle>
 </Layout>
