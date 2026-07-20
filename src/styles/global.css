@@ -1,6 +1,6 @@
 :root {
 	--font-sans: 'Satoshi', 'Segoe UI', sans-serif;
-	--bg: #f7f7f5;
+	--bg: #fdf5ed;
 	--fg: #111111;
 	--muted: #6b6b6b;
 	--hairline: rgba(17, 17, 17, 0.12);
@@ -21,7 +21,7 @@
 }
 
 html[data-theme='dark'] {
-	--bg: #050505;
+	--bg: #2e2c29;
 	--fg: #f2f2f2;
 	--muted: #8a8a8a;
 	--hairline: rgba(242, 242, 242, 0.12);
