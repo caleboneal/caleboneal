@@ -22,7 +22,7 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{pageTitle}</title>
-		<link
+		<link data-astro-prefetch="load"
 			href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap"
 			rel="stylesheet"
 		/>

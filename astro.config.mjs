@@ -12,6 +12,7 @@ export default defineConfig({
   site: 'https://caleboneal.dev',
   adapter: cloudflare(),
   integrations: [mdx()],
+  prefetch: true,
   markdown: {
     shikiConfig: {
       themes: {

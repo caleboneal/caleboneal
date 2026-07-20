@@ -15,7 +15,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 		<section class="writing" aria-labelledby="writing-heading">
 			<div class="section-head">
 				<h2 id="writing-heading">Writing</h2>
-				<a class="rss-link" href="/rss.xml" aria-label="RSS feed">
+				<a class="rss-link" href="/rss.xml" aria-label="RSS feed" data-astro-prefetch="hover">
 					<svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
 						<path
 							d="M6.18 15.82a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36Z"
