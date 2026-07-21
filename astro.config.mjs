@@ -10,7 +10,9 @@ import calebLight from './src/styles/shiki-caleb-light.json';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://caleboneal.dev',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'cloudflare'
+  }),
   integrations: [mdx()],
   prefetch: true,
   markdown: {
