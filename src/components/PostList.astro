@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { buildPostNumberMap } from '../data/blog';
 import { formatDate } from '../utils/formatDate';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { posts } = Astro.props;
+const postNumbers = buildPostNumberMap(posts);
 ---
 
 {
@@ -17,7 +19,10 @@ const { posts } = Astro.props;
 			{posts.map((post) => (
 				<li>
 					<a class="row" href={`/blog/${post.id}/`} data-astro-prefetch="hover">
-						<span class="title">{post.data.title}</span>
+						<span class="title-group">
+							<span class="number">{postNumbers.get(post.id)}</span>
+							<span class="title">{post.data.title}</span>
+						</span>
 						<time class="date" datetime={post.data.pubDate.toISOString()}>
 							{formatDate(post.data.pubDate)}
 						</time>
@@ -47,11 +52,38 @@ const { posts } = Astro.props;
 		padding: 1.35rem 0;
 	}
 
+	.posts li:first-child .row {
+		padding-top: 0;
+	}
+
 	.row:hover .date {
 		color: var(--fg);
 	}
 
+	.row:hover .title::after {
+		transform: scaleX(1);
+	}
+
+	.title-group {
+		display: flex;
+		align-items: baseline;
+		min-width: 0;
+	}
+
+	.number {
+		flex-shrink: 0;
+		color: color-mix(in srgb, var(--muted) 55%, transparent);
+		font-size: 0.875rem;
+		font-variant-numeric: tabular-nums;
+		font-weight: 500;
+		padding-right: 0.85rem;
+		margin-right: 0.85rem;
+		border-right: 1px solid var(--hairline);
+	}
+
 	.title {
+		position: relative;
+		display: inline-block;
 		font-size: clamp(1rem, 2vw, 1.125rem);
 		font-weight: 500;
 		line-height: 1.35;
@@ -59,6 +91,20 @@ const { posts } = Astro.props;
 		color: var(--fg);
 		width: fit-content;
 		max-width: 100%;
+		transition: color 0.2s ease;
+	}
+
+	.title::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: 0.08em;
+		width: 100%;
+		height: 1px;
+		background: var(--accent-rose);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.25s ease;
 	}
 
 	.date {

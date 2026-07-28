@@ -7,7 +7,10 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
 	<p class="copy">© {year} {site.name}</p>
-	<ThemeToggle />
+	<div class="end">
+		<a class="gpg-link" href={site.links.gpg}>GPG key</a>
+		<ThemeToggle />
+	</div>
 </footer>
 
 <style>
@@ -21,7 +24,14 @@ const year = new Date().getFullYear();
 		border-top: 1px solid var(--hairline);
 	}
 
-	.copy {
+	.end {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.copy,
+	.gpg-link {
 		margin: 0;
 		color: var(--muted);
 		font-size: 0.8rem;

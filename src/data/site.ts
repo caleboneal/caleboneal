@@ -8,6 +8,7 @@ export const site = {
 		github: 'https://github.com/caleboneal',
 		email: 'mailto:caleb@caleboneal.dev',
 		resume: '/resume.pdf',
+		gpg: '/pubkey.asc',
 	},
 	socialLinks: [
 		{ label: 'X', hrefKey: 'x', icon: 'x' },

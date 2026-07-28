@@ -26,7 +26,7 @@ const posts = await getPublishedPosts();
 
 <style>
 	.writing {
-		padding: 2.75rem 0 2.5rem;
+		padding: 1.5rem 0 2.5rem;
 	}
 
 	.section-head {
@@ -34,7 +34,7 @@ const posts = await getPublishedPosts();
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		margin-bottom: 0.5rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.section-head h2 {
@@ -62,5 +62,15 @@ const posts = await getPublishedPosts();
 	.rss-link:hover {
 		color: var(--accent-rose);
 		background: var(--accent-rose-soft);
+	}
+
+	@media (max-width: 768px) {
+		.writing {
+			padding-top: 1.35rem;
+		}
+
+		.section-head {
+			margin-bottom: 1.35rem;
+		}
 	}
 </style>

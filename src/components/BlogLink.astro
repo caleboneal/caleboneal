@@ -1,0 +1,40 @@
+---
+import { resolvePostByNumber } from '../data/blog';
+
+interface Props {
+	id: number;
+}
+
+const { id } = Astro.props;
+const resolved = await resolvePostByNumber(id);
+---
+
+{
+	resolved ? (
+		<a class="blog-link" href={resolved.href} data-astro-prefetch="hover">
+			BLOG {id}
+		</a>
+	) : (
+		<span class="blog-link blog-link--missing">BLOG {id}</span>
+	)
+}
+
+<style>
+	.blog-link {
+		color: var(--accent-rose);
+		font-size: 0.9em;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.blog-link:hover {
+		color: var(--accent-orange);
+	}
+
+	.blog-link--missing {
+		opacity: 0.55;
+		cursor: default;
+	}
+</style>
