@@ -19,24 +19,9 @@ import sunIcon from '../assets/sun.svg';
 </button>
 
 <script>
-	function getPreferredTheme() {
-		const stored = localStorage.getItem('theme');
-		if (stored === 'light' || stored === 'dark') return stored;
-		return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-	}
+	import { toggleTheme } from '../scripts/theme';
 
-	function setTheme(theme: string) {
-		document.documentElement.setAttribute('data-theme', theme);
-		localStorage.setItem('theme', theme);
-	}
-
-	const toggle = document.getElementById('theme-toggle');
-	setTheme(getPreferredTheme());
-	toggle?.addEventListener('click', () => {
-		const next =
-			document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-		setTheme(next);
-	});
+	document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
 </script>
 
 <style>

@@ -9,4 +9,15 @@ export const site = {
 		email: 'mailto:caleb@caleboneal.dev',
 		resume: '/resume.pdf',
 	},
+	socialLinks: [
+		{ label: 'X', hrefKey: 'x', icon: 'x' },
+		{ label: 'LinkedIn', hrefKey: 'linkedin', icon: 'linkedin' },
+		{ label: 'GitHub', hrefKey: 'github', icon: 'github' },
+		{ label: 'Email', hrefKey: 'email', icon: 'email', action: 'copy' },
+		{ label: 'Resume', hrefKey: 'resume', icon: 'resume', action: 'download' },
+	],
 } as const;
+
+export type SiteLinkKey = keyof typeof site.links;
+export type SocialLinkIcon = (typeof site.socialLinks)[number]['icon'];
+export type SocialLinkAction = 'copy' | 'download';

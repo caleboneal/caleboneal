@@ -1,276 +1,250 @@
 ---
-import { site } from "../data/site";
-import Icon from "./Icon.astro";
-import copyIcon from "../assets/copy.svg";
-import downloadIcon from "../assets/download.svg";
-import emailIcon from "../assets/email.svg";
-import githubIcon from "../assets/github.svg";
-import linkedinIcon from "../assets/linkedin.svg";
-import resumeIcon from "../assets/resume.svg";
-import xIcon from "../assets/x.svg";
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import copyIcon from '../assets/copy.svg';
+import downloadIcon from '../assets/download.svg';
+import emailIcon from '../assets/email.svg';
+import githubIcon from '../assets/github.svg';
+import linkedinIcon from '../assets/linkedin.svg';
+import resumeIcon from '../assets/resume.svg';
+import xIcon from '../assets/x.svg';
 
-const emailAddress = site.links.email.replace(/^mailto:/i, "");
+const icons = {
+	x: xIcon,
+	linkedin: linkedinIcon,
+	github: githubIcon,
+	email: emailIcon,
+	resume: resumeIcon,
+} as const;
 
-const links = [
-    {
-        label: "X",
-        href: site.links.x,
-        icon: xIcon,
-    },
-    {
-        label: "LinkedIn",
-        href: site.links.linkedin,
-        icon: linkedinIcon,
-    },
-    {
-        label: "GitHub",
-        href: site.links.github,
-        icon: githubIcon,
-    },
-    {
-        label: "Email",
-        href: site.links.email,
-        icon: emailIcon,
-        action: "copy" as const,
-    },
-    {
-        label: "Resume",
-        href: site.links.resume,
-        icon: resumeIcon,
-        action: "download" as const,
-    },
-];
+const emailAddress = site.links.email.replace(/^mailto:/i, '');
+
+const links = site.socialLinks.map((link) => ({
+	label: link.label,
+	href: site.links[link.hrefKey],
+	icon: icons[link.icon],
+	...(link.action ? { action: link.action } : {}),
+}));
 ---
 
 <nav class="socials" aria-label="Social links">
-    {
-        links.map((link) => (
-            <span
-                class:list={[
-                    "social",
-                    { "has-action": "action" in link && link.action },
-                ]}
-            >
-                <a
-                    class="icon-link"
-                    href={link.href}
-                    aria-label={link.label}
-                    title={link.label}
-                >
-                    <Icon src={link.icon} size="1.2rem" />
-                </a>
+	{
+		links.map((link) => (
+			<span
+				class:list={[
+					'social',
+					{ 'has-action': 'action' in link && link.action },
+				]}
+			>
+				<a
+					class="icon-link"
+					href={link.href}
+					aria-label={link.label}
+					title={link.label}
+				>
+					<Icon src={link.icon} size="1.2rem" />
+				</a>
 
-                {"action" in link && link.action === "copy" && (
-                    <button
-                        type="button"
-                        class="action"
-                        data-copy-email={emailAddress}
-                        aria-label="Copy email address"
-                        title="Copy email"
-                    >
-                        <Icon src={copyIcon} size="0.75rem" />
-                    </button>
-                )}
+				{'action' in link && link.action === 'copy' && (
+					<button
+						type="button"
+						class="action"
+						data-copy-email={emailAddress}
+						aria-label="Copy email address"
+						title="Copy email"
+					>
+						<Icon src={copyIcon} size="0.75rem" />
+					</button>
+				)}
 
-                {"action" in link && link.action === "download" && (
-                    <a
-                        class="action"
-                        href={link.href}
-                        download
-                        aria-label="Download resume"
-                        title="Download resume"
-                    >
-                        <Icon src={downloadIcon} size="0.75rem" />
-                    </a>
-                )}
-            </span>
-        ))
-    }
+				{'action' in link && link.action === 'download' && (
+					<a
+						class="action"
+						href={link.href}
+						download
+						aria-label="Download resume"
+						title="Download resume"
+					>
+						<Icon src={downloadIcon} size="0.75rem" />
+					</a>
+				)}
+			</span>
+		))
+	}
 </nav>
 
-<div class="toast" id="copy-toast" role="status" aria-live="polite" hidden>
-</div>
+<div class="toast" id="copy-toast" role="status" aria-live="polite" hidden></div>
 
 <script>
-    let toastTimer: number | undefined;
+	let toastTimer: number | undefined;
 
-    function showToast(message: string) {
-        const toast = document.getElementById("copy-toast");
-        if (!toast) return;
+	function showToast(message: string) {
+		const toast = document.getElementById('copy-toast');
+		if (!toast) return;
 
-        toast.textContent = message;
-        toast.hidden = false;
-        toast.classList.remove("show");
-        // retrigger enter animation
-        void toast.offsetWidth;
-        toast.classList.add("show");
+		toast.textContent = message;
+		toast.hidden = false;
+		toast.classList.remove('show');
+		// retrigger enter animation
+		void toast.offsetWidth;
+		toast.classList.add('show');
 
-        window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => {
-            toast.classList.remove("show");
-            window.setTimeout(() => {
-                toast.hidden = true;
-            }, 220);
-        }, 2200);
-    }
+		window.clearTimeout(toastTimer);
+		toastTimer = window.setTimeout(() => {
+			toast.classList.remove('show');
+			window.setTimeout(() => {
+				toast.hidden = true;
+			}, 220);
+		}, 2200);
+	}
 
-    function bindCopyEmail() {
-        document
-            .querySelectorAll<HTMLButtonElement>("[data-copy-email]")
-            .forEach((button) => {
-                if (button.dataset.bound === "true") return;
-                button.dataset.bound = "true";
+	function bindCopyEmail() {
+		document
+			.querySelectorAll<HTMLButtonElement>('[data-copy-email]')
+			.forEach((button) => {
+				if (button.dataset.bound === 'true') return;
+				button.dataset.bound = 'true';
 
-                button.addEventListener("click", async () => {
-                    const email = button.dataset.copyEmail;
-                    if (!email) return;
+				button.addEventListener('click', async () => {
+					const email = button.dataset.copyEmail;
+					if (!email) return;
 
-                    try {
-                        await navigator.clipboard.writeText(email);
-                        button.classList.add("copied");
-                        button.setAttribute("aria-label", "Email copied");
-                        button.setAttribute("title", "Copied");
-                        showToast(`Copied ${email}`);
-                        window.setTimeout(() => {
-                            button.classList.remove("copied");
-                            button.setAttribute(
-                                "aria-label",
-                                "Copy email address",
-                            );
-                            button.setAttribute("title", "Copy email");
-                        }, 1600);
-                    } catch {
-                        button.setAttribute("title", "Copy failed");
-                        showToast("Couldn’t copy email");
-                    }
-                });
-            });
-    }
+					try {
+						await navigator.clipboard.writeText(email);
+						button.classList.add('copied');
+						button.setAttribute('aria-label', 'Email copied');
+						button.setAttribute('title', 'Copied');
+						showToast(`Copied ${email}`);
+						window.setTimeout(() => {
+							button.classList.remove('copied');
+							button.setAttribute('aria-label', 'Copy email address');
+							button.setAttribute('title', 'Copy email');
+						}, 1600);
+					} catch {
+						button.setAttribute('title', 'Copy failed');
+						showToast('Couldn’t copy email');
+					}
+				});
+			});
+	}
 
-    bindCopyEmail();
+	bindCopyEmail();
 </script>
 
 <style>
-    .socials {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 0.55rem;
-        /* room for action badges that sit past the icon edge */
-        padding: 0.35rem 0.45rem 0.35rem 0;
-    }
+	.socials {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 0.55rem;
+		/* room for action badges that sit past the icon edge */
+		padding: 0.35rem 0.45rem 0.35rem 0;
+	}
 
-    @media (max-width: 768px) {
-        .socials {
-            justify-content: flex-start;
-            padding: 0.35rem 0.45rem 0.35rem 0;
-        }
+	@media (max-width: 768px) {
+		.socials {
+			justify-content: flex-start;
+			padding: 0.35rem 0.45rem 0.35rem 0;
+		}
 
-        .action {
-            display: none;
-        }
+		.action {
+			display: none;
+		}
 
-        .social.has-action {
-            margin-right: 0;
-        }
-    }
+		.social.has-action {
+			margin-right: 0;
+		}
+	}
 
-    .social {
-        position: relative;
-        display: inline-flex;
-    }
+	.social {
+		position: relative;
+		display: inline-flex;
+	}
 
-    .social.has-action {
-        margin-right: 0.35rem;
-    }
+	.social.has-action {
+		margin-right: 0.35rem;
+	}
 
-    .icon-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.85rem;
-        height: 2.85rem;
-        border-radius: 999px;
-        border: 2px solid
-            color-mix(in srgb, var(--accent-orange) 40%, transparent);
-        background-color: var(--bg);
-        color: var(--accent-orange);
-        /* Only animate hover motion — theme colors snap to avoid border flash */
-        transition:
-            transform 0.2s ease,
-            color 0.2s ease;
-    }
+	.icon-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.85rem;
+		height: 2.85rem;
+		border-radius: 999px;
+		border: 2px solid color-mix(in srgb, var(--accent-orange) 40%, transparent);
+		background-color: var(--bg);
+		color: var(--accent-orange);
+		/* Only animate hover motion — theme colors snap to avoid border flash */
+		transition:
+			transform 0.2s ease,
+			color 0.2s ease;
+	}
 
-    .icon-link:hover {
-        transform: translateY(-1px);
-        border-color: var(--accent-rose);
-        color: var(--accent-rose);
-    }
+	.icon-link:hover {
+		transform: translateY(-1px);
+		border-color: var(--accent-rose);
+		color: var(--accent-rose);
+	}
 
-    .action {
-        position: absolute;
-        right: -0.25rem;
-        bottom: -0.25rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 1.35rem;
-        height: 1.35rem;
-        border-radius: 999px;
-        appearance: none;
-        -webkit-appearance: none;
-        border: 1px solid
-            color-mix(in srgb, var(--accent-orange) 45%, transparent);
-        /* Match parent icon fill without a --bg halo ring (halo flashed on theme change) */
-        background-color: color-mix(
-            in srgb,
-            var(--accent-orange) 10%,
-            var(--bg)
-        );
-        color: var(--accent-orange);
-        box-shadow: none;
-        transition:
-            transform 0.2s ease,
-            color 0.2s ease;
-    }
+	.action {
+		position: absolute;
+		right: -0.25rem;
+		bottom: -0.25rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.35rem;
+		height: 1.35rem;
+		border-radius: 999px;
+		appearance: none;
+		-webkit-appearance: none;
+		border: 1px solid color-mix(in srgb, var(--accent-orange) 45%, transparent);
+		/* Match parent icon fill without a --bg halo ring (halo flashed on theme change) */
+		background-color: color-mix(in srgb, var(--accent-orange) 10%, var(--bg));
+		color: var(--accent-orange);
+		box-shadow: none;
+		transition:
+			transform 0.2s ease,
+			color 0.2s ease;
+	}
 
-    .action:hover {
-        border-color: var(--accent-rose);
-        color: var(--accent-rose);
-        transform: scale(1.06);
-    }
+	.action:hover {
+		border-color: var(--accent-rose);
+		color: var(--accent-rose);
+		transform: scale(1.06);
+	}
 
-    .action.copied {
-        border-color: var(--accent-rose);
-        color: var(--accent-rose);
-    }
+	.action.copied {
+		border-color: var(--accent-rose);
+		color: var(--accent-rose);
+	}
 
-    .toast {
-        position: fixed;
-        left: 50%;
-        bottom: 1.75rem;
-        z-index: 50;
-        padding: 0.7rem 1.1rem;
-        border-radius: 999px;
-        border: 1px solid
-            color-mix(in srgb, var(--accent-orange) 35%, var(--hairline));
-        background: color-mix(in srgb, var(--bg) 92%, var(--accent-orange));
-        color: var(--fg);
-        font-size: 0.85rem;
-        font-weight: 500;
-        letter-spacing: 0.01em;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-        transform: translate(-50%, 0.6rem);
-        opacity: 0;
-        pointer-events: none;
-        transition:
-            opacity 0.22s ease,
-            transform 0.22s ease;
-    }
+	.toast {
+		position: fixed;
+		left: 50%;
+		bottom: 1.75rem;
+		z-index: 50;
+		padding: 0.7rem 1.1rem;
+		border-radius: 999px;
+		border: 1px solid color-mix(in srgb, var(--accent-orange) 35%, var(--hairline));
+		background: color-mix(in srgb, var(--bg) 92%, var(--accent-orange));
+		color: var(--fg);
+		font-size: 0.85rem;
+		font-weight: 500;
+		letter-spacing: 0.01em;
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+		transform: translate(-50%, 0.6rem);
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			opacity 0.22s ease,
+			transform 0.22s ease;
+	}
 
-    .toast.show {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
+	.toast.show {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
 </style>
