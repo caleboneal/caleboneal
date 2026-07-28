@@ -1,5 +1,6 @@
 ---
 import { formatDate } from '../utils/formatDate';
+import { formatReadingTime } from '../utils/readingTime';
 import '../styles/prose.css';
 
 interface AdjacentPost {
@@ -11,6 +12,8 @@ interface Props {
 	title: string;
 	description?: string;
 	date?: Date;
+	updatedDate?: Date;
+	readingTime?: number;
 	number?: number;
 	previous?: AdjacentPost;
 	next?: AdjacentPost;
@@ -22,6 +25,8 @@ const {
 	title,
 	description,
 	date,
+	updatedDate,
+	readingTime,
 	number,
 	previous,
 	next,
@@ -30,6 +35,11 @@ const {
 } = Astro.props;
 
 const formattedDate = date ? formatDate(date) : null;
+const formattedUpdated =
+	updatedDate && (!date || updatedDate.valueOf() !== date.valueOf())
+		? formatDate(updatedDate)
+		: null;
+const readingLabel = readingTime !== undefined ? formatReadingTime(readingTime) : null;
 ---
 
 <article class="post">
@@ -44,9 +54,32 @@ const formattedDate = date ? formatDate(date) : null;
 					{title}
 				</h1>
 			</slot>
-			{(formattedDate && date) || description ? (
+			{(formattedDate && date) || formattedUpdated || readingLabel || description ? (
 				<div class="meta">
-					{formattedDate && date && <time datetime={date.toISOString()}>{formattedDate}</time>}
+					{(formattedDate && date) || formattedUpdated || readingLabel ? (
+						<p class="byline">
+							{formattedDate && date && (
+								<time datetime={date.toISOString()}>{formattedDate}</time>
+							)}
+							{formattedUpdated && updatedDate && (
+								<>
+									{formattedDate && date && <span class="sep" aria-hidden="true">·</span>}
+									<span>
+										Updated{' '}
+										<time datetime={updatedDate.toISOString()}>{formattedUpdated}</time>
+									</span>
+								</>
+							)}
+							{readingLabel && (
+								<>
+									{(formattedDate && date) || formattedUpdated ? (
+										<span class="sep" aria-hidden="true">·</span>
+									) : null}
+									<span>{readingLabel}</span>
+								</>
+							)}
+						</p>
+					) : null}
 					{description && <p class="summary">{description}</p>}
 				</div>
 			) : null}
@@ -225,14 +258,28 @@ const formattedDate = date ? formatDate(date) : null;
 	}
 
 	.header time {
-		color: var(--muted);
-		font-size: 0.9rem;
+		color: inherit;
+		font-size: inherit;
 	}
 
 	.meta {
 		display: flex;
 		flex-direction: column;
 		gap: 0.65rem;
+	}
+
+	.byline {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.35rem 0.5rem;
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+
+	.sep {
+		color: color-mix(in srgb, var(--muted) 70%, transparent);
 	}
 
 	.summary {

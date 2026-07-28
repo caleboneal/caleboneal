@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import BlogArticle from '../../components/BlogArticle.astro';
 import BlogLink from '../../components/BlogLink.astro';
 import { buildPostNumberMap, getAdjacentPosts } from '../../data/blog';
+import { getReadingTimeMinutes } from '../../utils/readingTime';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -22,6 +23,7 @@ const { post, number, previous, next } = Astro.props;
 const { Content } = await render(post, {
 	components: { BlogLink },
 });
+const readingTime = getReadingTimeMinutes(post.body ?? '');
 ---
 
 <Layout title={post.data.title} description={post.data.description} image={post.data.image} type="article">
@@ -29,6 +31,8 @@ const { Content } = await render(post, {
 		title={post.data.title}
 		description={post.data.description}
 		date={post.data.pubDate}
+		updatedDate={post.data.updatedDate}
+		readingTime={readingTime}
 		number={number}
 		previous={previous}
 		next={next}

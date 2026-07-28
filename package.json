@@ -21,9 +21,11 @@
 		"@astrojs/rss": "^4.0.19",
 		"@astrojs/sitemap": "^3.7.3",
 		"astro": "^7.1.4",
+		"markdown-it": "^14.3.0",
 		"typescript": "^6.0.3"
 	},
 	"devDependencies": {
+		"@types/markdown-it": "^14.1.2",
 		"wrangler": "^4.111.0"
 	}
 }
