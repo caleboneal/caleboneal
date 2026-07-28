@@ -1,6 +1,13 @@
 ---
 import { formatDate } from '../utils/formatDate';
 import { formatReadingTime } from '../utils/readingTime';
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import emailIcon from '../assets/email.svg';
+import githubIcon from '../assets/github.svg';
+import linkedinIcon from '../assets/linkedin.svg';
+import resumeIcon from '../assets/resume.svg';
+import xIcon from '../assets/x.svg';
 import '../styles/prose.css';
 
 interface AdjacentPost {
@@ -40,13 +47,48 @@ const formattedUpdated =
 		? formatDate(updatedDate)
 		: null;
 const readingLabel = readingTime !== undefined ? formatReadingTime(readingTime) : null;
+
+const socialIcons = {
+	x: xIcon,
+	linkedin: linkedinIcon,
+	github: githubIcon,
+	email: emailIcon,
+	resume: resumeIcon,
+} as const;
+
+const socialLinks = site.socialLinks.map((link) => ({
+	label: link.label,
+	href: site.links[link.hrefKey],
+	icon: socialIcons[link.icon],
+}));
 ---
 
 <article class="post">
-	<div class="post-body">
+	<div class="top">
 		<a class="back" href={backHref} data-nav-transition="fade" data-astro-prefetch="hover">
 			{backLabel}
 		</a>
+		<div class="brand-end">
+			<a class="brand" href="/" data-nav-transition="fade" data-astro-prefetch="hover">
+				{site.name}
+			</a>
+			{
+				socialLinks.map((link) => (
+					<a
+						class="social"
+						href={link.href}
+						aria-label={link.label}
+						title={link.label}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Icon src={link.icon} size="0.875rem" />
+					</a>
+				))
+			}
+		</div>
+	</div>
+	<div class="post-body">
 		<header class="header">
 			<slot name="title">
 				<h1>
@@ -134,17 +176,24 @@ const readingLabel = readingTime !== undefined ? formatReadingTime(readingTime) 
 		max-width: 42rem;
 	}
 
-	.back,
+	.top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 2rem;
+		opacity: 0;
+		transform: translateY(-0.55rem);
+		animation: article-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: 80ms;
+	}
+
 	.header,
 	.content :global(> *),
 	.post-nav {
 		opacity: 0;
 		transform: translateY(-0.55rem);
 		animation: article-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	}
-
-	.back {
-		animation-delay: 80ms;
 	}
 
 	.header {
@@ -207,7 +256,7 @@ const readingLabel = readingTime !== undefined ? formatReadingTime(readingTime) 
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.back,
+		.top,
 		.header,
 		.content :global(> *),
 		.post-nav {
@@ -218,8 +267,6 @@ const readingLabel = readingTime !== undefined ? formatReadingTime(readingTime) 
 	}
 
 	.back {
-		display: inline-block;
-		margin-bottom: 2rem;
 		color: var(--muted);
 		font-size: 0.875rem;
 		transition: color 0.2s ease;
@@ -227,6 +274,41 @@ const readingLabel = readingTime !== undefined ? formatReadingTime(readingTime) 
 
 	.back:hover {
 		color: var(--accent-rose);
+	}
+
+	.brand-end {
+		display: inline-flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		gap: 0.55rem;
+		flex-shrink: 0;
+		color: var(--accent-orange);
+	}
+
+	.brand,
+	.social {
+		color: inherit;
+		transition: color 0.2s ease;
+	}
+
+	.brand:hover,
+	.social:hover {
+		color: var(--accent-rose);
+	}
+
+	.brand {
+		font-size: 0.875rem;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		white-space: nowrap;
+	}
+
+	.social {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 0;
 	}
 
 	.header {
