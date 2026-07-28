@@ -11,6 +11,8 @@ function rayOuterRadius(index: number) {
 
 const burstOuter = Math.max(...Array.from({ length: rayCount }, (_, i) => rayOuterRadius(i)));
 const burstEdge = burstOuter * 0.88;
+const glowRadius = 118;
+const innerGlowEdge = (burstInner / glowRadius) * 100;
 
 /** Point on a circle at degrees (0 = right, CCW). */
 function point(radius: number, deg: number) {
@@ -36,6 +38,23 @@ function point(radius: number, deg: number) {
 				<stop offset="55%" stop-color="var(--accent-orange)"></stop>
 				<stop offset="100%" stop-color="var(--accent-rose)"></stop>
 			</radialGradient>
+			<radialGradient id="inner-glow" cx={cx} cy={cy} r={glowRadius} gradientUnits="userSpaceOnUse">
+				<stop offset="0%" stop-color="var(--accent-orange)" stop-opacity="0"></stop>
+				<stop offset={`${innerGlowEdge}%`} stop-color="var(--accent-orange)" stop-opacity="0"></stop>
+				<stop offset={`${innerGlowEdge + 5}%`} stop-color="var(--accent-rose)" stop-opacity="0.32"></stop>
+				<stop offset={`${innerGlowEdge + 16}%`} stop-color="var(--accent-orange)" stop-opacity="0.14"></stop>
+				<stop offset="100%" stop-color="var(--accent-rose)" stop-opacity="0"></stop>
+			</radialGradient>
+			<filter
+				id="inner-glow-blur"
+				x="-50%"
+				y="-50%"
+				width="200%"
+				height="200%"
+				color-interpolation-filters="sRGB"
+			>
+				<feGaussianBlur stdDeviation="10" result="blur"></feGaussianBlur>
+			</filter>
 			<filter
 				id="orbit-grain"
 				x="-25%"
@@ -70,8 +89,16 @@ function point(radius: number, deg: number) {
 			</filter>
 		</defs>
 
-		<g class="orbit-field" filter="url(#orbit-grain)">
-			<g class="starburst">
+		<g class="orbit-field">
+			<circle
+				class="inner-glow"
+				cx={cx}
+				cy={cy}
+				r={glowRadius}
+				fill="url(#inner-glow)"
+				filter="url(#inner-glow-blur)"
+			/>
+			<g class="starburst" filter="url(#orbit-grain)">
 				<circle cx={cx} cy={cy} r="128" class="burst-ring outer" />
 				<circle cx={cx} cy={cy} r={burstInner} class="burst-ring inner" />
 				<circle cx={cx} cy={cy} r={burstEdge} class="burst-ring edge" />
@@ -113,10 +140,6 @@ function point(radius: number, deg: number) {
 		transform: translate(-50%, -50%);
 	}
 
-	.starburst {
-		opacity: 0.9;
-	}
-
 	.burst-ring {
 		fill: none;
 		stroke: url(#burst-radial);
@@ -124,24 +147,20 @@ function point(radius: number, deg: number) {
 
 	.burst-ring.outer {
 		stroke-width: 1.4;
-		opacity: 0.9;
 	}
 
 	.burst-ring.inner {
 		stroke-width: 1.15;
-		opacity: 0.75;
 	}
 
 	.burst-ring.edge {
 		stroke-width: 1.35;
-		opacity: 0.85;
 	}
 
 	.burst-spoke {
 		stroke: url(#burst-warm);
 		stroke-width: 1.2;
 		stroke-linecap: butt;
-		opacity: 0.82;
 	}
 
 	@media (max-width: 768px) {
