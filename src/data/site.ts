@@ -2,6 +2,7 @@ export const site = {
 	name: "Caleb O'Neal",
 	description: "Personal site and writing by Caleb O'Neal.",
 	url: 'https://caleboneal.dev',
+	ogImage: '/og-default.png',
 	links: {
 		x: 'https://x.com/CalebONeal07',
 		linkedin: 'https://linkedin.com/in/caleboneal2007',

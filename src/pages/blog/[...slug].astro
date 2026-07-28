@@ -24,9 +24,10 @@ const { Content } = await render(post, {
 });
 ---
 
-<Layout title={post.data.title}>
+<Layout title={post.data.title} description={post.data.description} image={post.data.image} type="article">
 	<BlogArticle
 		title={post.data.title}
+		description={post.data.description}
 		date={post.data.pubDate}
 		number={number}
 		previous={previous}

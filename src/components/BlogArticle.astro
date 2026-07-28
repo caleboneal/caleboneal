@@ -9,6 +9,7 @@ interface AdjacentPost {
 
 interface Props {
 	title: string;
+	description?: string;
 	date?: Date;
 	number?: number;
 	previous?: AdjacentPost;
@@ -19,6 +20,7 @@ interface Props {
 
 const {
 	title,
+	description,
 	date,
 	number,
 	previous,
@@ -42,7 +44,12 @@ const formattedDate = date ? formatDate(date) : null;
 					{title}
 				</h1>
 			</slot>
-			{formattedDate && date && <time datetime={date.toISOString()}>{formattedDate}</time>}
+			{(formattedDate && date) || description ? (
+				<div class="meta">
+					{formattedDate && date && <time datetime={date.toISOString()}>{formattedDate}</time>}
+					{description && <p class="summary">{description}</p>}
+				</div>
+			) : null}
 		</header>
 		<div class="content prose">
 			<slot />
@@ -220,6 +227,21 @@ const formattedDate = date ? formatDate(date) : null;
 	.header time {
 		color: var(--muted);
 		font-size: 0.9rem;
+	}
+
+	.meta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+	}
+
+	.summary {
+		margin: 0;
+		color: var(--muted);
+		font-size: 1.05rem;
+		line-height: 1.45;
+		letter-spacing: -0.01em;
+		max-width: 36rem;
 	}
 
 	.post-nav {
