@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
 import PostList from '../components/PostList.astro';
-import { getPublishedPosts } from '../data/blog';
+import { getListedPosts } from '../data/blog';
 import rssIcon from '../assets/rss.svg';
 
-const posts = await getPublishedPosts();
+const posts = await getListedPosts();
 ---
 
 <Layout>

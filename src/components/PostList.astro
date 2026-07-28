@@ -25,7 +25,9 @@ const postNumbers = buildPostNumberMap(posts);
 						data-nav-transition="fade"
 					>
 						<span class="title-group">
-							<span class="number">{postNumbers.get(post.id)}</span>
+							<span class="number" aria-label={post.data.published === 'preview' ? 'Preview' : undefined}>
+								{postNumbers.get(post.id) ?? '··'}
+							</span>
 							<span class="title">{post.data.title}</span>
 						</span>
 						<span class="row-rule" aria-hidden="true"></span>
