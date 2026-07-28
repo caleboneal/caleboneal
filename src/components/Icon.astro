@@ -1,0 +1,27 @@
+---
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	src: ImageMetadata;
+	size?: string;
+	class?: string;
+}
+
+const { src, size = '1.2rem', class: className } = Astro.props;
+---
+
+<span
+	class:list={['icon', className]}
+	style={`--icon: url(${src.src}); width: ${size}; height: ${size};`}
+	aria-hidden="true"
+></span>
+
+<style>
+	.icon {
+		display: block;
+		flex-shrink: 0;
+		background-color: currentColor;
+		mask: var(--icon) center / contain no-repeat;
+		-webkit-mask: var(--icon) center / contain no-repeat;
+	}
+</style>

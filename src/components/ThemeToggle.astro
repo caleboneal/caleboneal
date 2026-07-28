@@ -1,4 +1,7 @@
 ---
+import Icon from './Icon.astro';
+import moonIcon from '../assets/moon.svg';
+import sunIcon from '../assets/sun.svg';
 ---
 
 <button
@@ -7,23 +10,12 @@
 	id="theme-toggle"
 	aria-label="Toggle color theme"
 >
-	<svg class="icon sun" viewBox="0 0 24 24" aria-hidden="true">
-		<circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
-		<path
-			d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.05 5.05l1.55 1.55M17.4 17.4l1.55 1.55M18.95 5.05l-1.55 1.55M6.6 17.4l-1.55 1.55"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="1.5"
-			stroke-linecap="round"></path>
-	</svg>
-	<svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true">
-		<path
-			d="M20 13.4A7.5 7.5 0 0 1 10.6 4 7.8 7.8 0 1 0 20 13.4Z"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="1.5"
-			stroke-linejoin="round"></path>
-	</svg>
+	<span class="sun">
+		<Icon src={sunIcon} size="1.15rem" />
+	</span>
+	<span class="moon">
+		<Icon src={moonIcon} size="1.15rem" />
+	</span>
 </button>
 
 <script>
@@ -62,11 +54,6 @@
 	.theme-toggle:hover {
 		color: var(--accent-orange);
 		background: var(--accent-orange-soft);
-	}
-
-	.icon {
-		width: 1.15rem;
-		height: 1.15rem;
 	}
 
 	html[data-theme='dark'] .sun {

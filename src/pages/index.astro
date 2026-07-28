@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import Icon from '../components/Icon.astro';
 import PostList from '../components/PostList.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../data/blog';
+import rssIcon from '../assets/rss.svg';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = await getPublishedPosts();
 ---
 
 <Layout>
@@ -16,23 +16,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 			<div class="section-head">
 				<h2 id="writing-heading">Writing</h2>
 				<a class="rss-link" href="/rss.xml" aria-label="RSS feed" data-astro-prefetch="hover">
-					<svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
-						<path
-							d="M6.18 15.82a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36Z"
-							fill="currentColor"></path>
-						<path
-							d="M4 11.12a8.88 8.88 0 0 1 8.88 8.88"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"></path>
-						<path
-							d="M4 4.5A15.5 15.5 0 0 1 19.5 20"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"></path>
-					</svg>
+					<Icon src={rssIcon} size="1.05rem" />
 				</a>
 			</div>
 			<PostList posts={posts} />
@@ -78,10 +62,5 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	.rss-link:hover {
 		color: var(--accent-rose);
 		background: var(--accent-rose-soft);
-	}
-
-	.rss-icon {
-		width: 1.05rem;
-		height: 1.05rem;
 	}
 </style>

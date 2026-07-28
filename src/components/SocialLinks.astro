@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import Icon from "./Icon.astro";
 import copyIcon from "../assets/copy.svg";
 import downloadIcon from "../assets/download.svg";
 import emailIcon from "../assets/email.svg";
@@ -56,11 +57,7 @@ const links = [
                     aria-label={link.label}
                     title={link.label}
                 >
-                    <span
-                        class="icon"
-                        style={`--icon: url(${link.icon.src})`}
-                        aria-hidden="true"
-                    />
+                    <Icon src={link.icon} size="1.2rem" />
                 </a>
 
                 {"action" in link && link.action === "copy" && (
@@ -71,11 +68,7 @@ const links = [
                         aria-label="Copy email address"
                         title="Copy email"
                     >
-                        <span
-                            class="icon"
-                            style={`--icon: url(${copyIcon.src})`}
-                            aria-hidden="true"
-                        />
+                        <Icon src={copyIcon} size="0.75rem" />
                     </button>
                 )}
 
@@ -87,11 +80,7 @@ const links = [
                         aria-label="Download resume"
                         title="Download resume"
                     >
-                        <span
-                            class="icon"
-                            style={`--icon: url(${downloadIcon.src})`}
-                            aria-hidden="true"
-                        />
+                        <Icon src={downloadIcon} size="0.75rem" />
                     </a>
                 )}
             </span>
@@ -213,14 +202,6 @@ const links = [
             color 0.2s ease;
     }
 
-    .icon-link .icon {
-        width: 1.2rem;
-        height: 1.2rem;
-        background-color: currentColor;
-        mask: var(--icon) center / contain no-repeat;
-        -webkit-mask: var(--icon) center / contain no-repeat;
-    }
-
     .icon-link:hover {
         transform: translateY(-1px);
         border-color: var(--accent-rose);
@@ -252,14 +233,6 @@ const links = [
         transition:
             transform 0.2s ease,
             color 0.2s ease;
-    }
-
-    .action .icon {
-        width: 0.75rem;
-        height: 0.75rem;
-        background-color: currentColor;
-        mask: var(--icon) center / contain no-repeat;
-        -webkit-mask: var(--icon) center / contain no-repeat;
     }
 
     .action:hover {
