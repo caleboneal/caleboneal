@@ -4,6 +4,16 @@ import SocialLinks from './SocialLinks.astro';
 
 const cx = 320;
 const cy = 260;
+const burstInner = 66;
+const rayCount = 36;
+
+function rayOuterRadius(index: number) {
+	const lengthSeed = Math.sin((index + 1) * 1.9) * 0.5 + Math.cos((index + 2) * 0.73) * 0.5;
+	return 142 + ((lengthSeed + 1) / 2) * 64;
+}
+
+const burstOuter = Math.max(...Array.from({ length: rayCount }, (_, i) => rayOuterRadius(i)));
+const burstEdge = burstOuter * 0.88;
 
 /** Point on a circle at degrees (0 = right, CCW). */
 function point(radius: number, deg: number) {
@@ -13,138 +23,6 @@ function point(radius: number, deg: number) {
 		y: +(cy + radius * Math.sin(rad)).toFixed(2),
 	};
 }
-
-const orbits = [
-	{
-		id: 'a',
-		r: 34,
-		width: 1.35,
-		dash: '165 50',
-		opacity: 0.9,
-		duration: '42s',
-		reverse: false,
-		gradient: 'warm',
-		rotate: 210,
-		dots: [{ deg: 250, kind: 'solid', size: 2.4 }],
-	},
-	{
-		id: 'b',
-		r: 51,
-		width: 0.7,
-		dash: '1.1 5.5',
-		opacity: 0.55,
-		duration: '56s',
-		reverse: true,
-		gradient: 'cool',
-		rotate: 35,
-		dots: [{ deg: 120, kind: 'hollow', size: 3.2 }],
-	},
-	{
-		id: 'c',
-		r: 68,
-		width: 1.6,
-		dash: '155 45 95 130',
-		opacity: 0.85,
-		duration: '68s',
-		reverse: false,
-		gradient: 'warm',
-		rotate: 300,
-		dots: [
-			{ deg: 40, kind: 'solid', size: 2.8 },
-			{ deg: 200, kind: 'hollow', size: 3.5 },
-		],
-	},
-	{
-		id: 'd',
-		r: 96,
-		width: 0.85,
-		dash: '380 220',
-		opacity: 0.65,
-		duration: '80s',
-		reverse: true,
-		gradient: 'cool',
-		rotate: 145,
-		dots: [{ deg: 310, kind: 'solid', size: 2.2 }],
-	},
-	{
-		id: 'e',
-		r: 114,
-		width: 2.1,
-		dash: '95 28 70 35 200 280',
-		opacity: 0.75,
-		duration: '94s',
-		reverse: false,
-		gradient: 'warm',
-		rotate: 70,
-		dots: [
-			{ deg: 160, kind: 'hollow', size: 4 },
-			{ deg: 5, kind: 'solid', size: 2.6 },
-		],
-	},
-	{
-		id: 'f',
-		r: 142,
-		width: 0.65,
-		dash: '0.9 4.2',
-		opacity: 0.45,
-		duration: '108s',
-		reverse: true,
-		gradient: 'cool',
-		rotate: 250,
-		dots: [{ deg: 85, kind: 'hollow', size: 2.8 }],
-	},
-	{
-		id: 'g',
-		r: 158,
-		width: 1.15,
-		dash: '520 470',
-		opacity: 0.7,
-		duration: '118s',
-		reverse: false,
-		gradient: 'warm',
-		rotate: 5,
-		dots: [{ deg: 275, kind: 'solid', size: 3 }],
-	},
-	{
-		id: 'h',
-		r: 188,
-		width: 1.9,
-		dash: '180 40 120 50 280 500',
-		opacity: 0.8,
-		duration: '132s',
-		reverse: true,
-		gradient: 'cool',
-		rotate: 185,
-		dots: [
-			{ deg: 55, kind: 'solid', size: 2.5 },
-			{ deg: 220, kind: 'hollow', size: 4.2 },
-		],
-	},
-	{
-		id: 'i',
-		r: 214,
-		width: 0.75,
-		dash: '1.4 7',
-		opacity: 0.4,
-		duration: '148s',
-		reverse: false,
-		gradient: 'warm',
-		rotate: 320,
-		dots: [{ deg: 140, kind: 'hollow', size: 3.1 }],
-	},
-	{
-		id: 'j',
-		r: 238,
-		width: 1.4,
-		dash: '420 80 260 730',
-		opacity: 0.6,
-		duration: '164s',
-		reverse: true,
-		gradient: 'cool',
-		rotate: 110,
-		dots: [{ deg: 345, kind: 'solid', size: 2.7 }],
-	},
-] as const;
 ---
 
 <section class="hero">
@@ -152,86 +30,73 @@ const orbits = [
 	<div class="orbit-stage" aria-hidden="true">
 		<svg class="orbits" viewBox="0 0 640 520" fill="none">
 			<defs>
-				<linearGradient id="orbit-warm" x1="80" y1="60" x2="560" y2="360" gradientUnits="userSpaceOnUse">
+				<linearGradient id="burst-warm" x1="120" y1="80" x2="520" y2="400" gradientUnits="userSpaceOnUse">
 					<stop offset="0%" stop-color="var(--accent-orange)"></stop>
-					<stop offset="55%" stop-color="var(--accent-rose)"></stop>
-					<stop offset="100%" stop-color="var(--accent-orange)"></stop>
+					<stop offset="42%" stop-color="var(--accent-rose)"></stop>
+					<stop offset="78%" stop-color="var(--accent-orange)"></stop>
+					<stop offset="100%" stop-color="var(--accent-rose)"></stop>
 				</linearGradient>
-				<linearGradient id="orbit-cool" x1="520" y1="40" x2="120" y2="380" gradientUnits="userSpaceOnUse">
+				<radialGradient id="burst-radial" cx={cx} cy={cy} r={burstEdge} gradientUnits="userSpaceOnUse">
 					<stop offset="0%" stop-color="var(--accent-rose)"></stop>
-					<stop offset="100%" stop-color="var(--accent-orange)"></stop>
-				</linearGradient>
-				<!-- Grain applied only to painted orbit pixels -->
+					<stop offset="55%" stop-color="var(--accent-orange)"></stop>
+					<stop offset="100%" stop-color="var(--accent-rose)"></stop>
+				</radialGradient>
 				<filter
 					id="orbit-grain"
-					x="-20%"
-					y="-20%"
-					width="140%"
-					height="140%"
+					x="-25%"
+					y="-25%"
+					width="150%"
+					height="150%"
 					color-interpolation-filters="sRGB"
 				>
 					<feTurbulence
 						type="fractalNoise"
-						baseFrequency="1.15"
-						numOctaves="3"
+						baseFrequency="1.35"
+						numOctaves="4"
 						stitchTiles="stitch"
-						result="noise"></feTurbulence>
+						result="coarse"></feTurbulence>
+					<feTurbulence
+						type="fractalNoise"
+						baseFrequency="2.8"
+						numOctaves="2"
+						stitchTiles="stitch"
+						result="fine"></feTurbulence>
+					<feBlend in="coarse" in2="fine" mode="multiply" result="noise"></feBlend>
 					<feColorMatrix
 						in="noise"
 						type="matrix"
-						values="0 0 0 0 0.55
-                  0 0 0 0 0.35
-                  0 0 0 0 0.28
-                  0 0 0 0.55 0"
+						values="0 0 0 0 0.52
+                  0 0 0 0 0.32
+                  0 0 0 0 0.26
+                  0 0 0 0.62 0"
 						result="mono"></feColorMatrix>
-					<feBlend in="SourceGraphic" in2="mono" mode="overlay" result="grained"></feBlend>
+					<feBlend in="SourceGraphic" in2="mono" mode="soft-light" result="grained"></feBlend>
 					<feComposite in="grained" in2="SourceGraphic" operator="in"></feComposite>
 				</filter>
 			</defs>
 
 			<g class="orbit-field" filter="url(#orbit-grain)">
-				{
-					orbits.map((orbit) => (
-						<g
-							class:list={['orbit', `orbit-${orbit.id}`, { reverse: orbit.reverse }]}
-							style={`--orbit-duration: ${orbit.duration}; --orbit-opacity: ${orbit.opacity}; --orbit-rotate: ${orbit.rotate}deg;`}
-						>
-							<circle
-								cx={cx}
-								cy={cy}
-								r={orbit.r}
-								stroke={`url(#orbit-${orbit.gradient})`}
-								stroke-width={orbit.width}
-								stroke-dasharray={orbit.dash}
-								stroke-linecap="round"
-								fill="none"
-								class="trail"
-							/>
-							{orbit.dots.map((dot) => {
-								const { x, y } = point(orbit.r, dot.deg);
-								return dot.kind === 'solid' ? (
-									<circle
-										cx={x}
-										cy={y}
-										r={dot.size}
-										fill={`url(#orbit-${orbit.gradient})`}
-										class="marker solid"
-									/>
-								) : (
-									<circle
-										cx={x}
-										cy={y}
-										r={dot.size}
-										fill="none"
-										stroke={`url(#orbit-${orbit.gradient})`}
-										stroke-width="1.15"
-										class="marker hollow"
-									/>
-								);
-							})}
-						</g>
-					))
-				}
+				<g class="starburst">
+					<circle cx={cx} cy={cy} r="128" class="burst-ring outer" />
+					<circle cx={cx} cy={cy} r={burstInner} class="burst-ring inner" />
+					<circle cx={cx} cy={cy} r={burstEdge} class="burst-ring edge" />
+					{
+						Array.from({ length: rayCount }).map((_, i) => {
+							const deg = i * (360 / rayCount);
+							const outer = rayOuterRadius(i);
+							const spread = 1.7 + ((Math.sin((i + 4) * 1.17) + 1) / 2) * 2.6;
+							const tip = point(outer, deg);
+							const left = point(burstInner, deg - spread);
+							const right = point(burstInner, deg + spread);
+							return (
+								<g class="burst-ray">
+									<line x1={tip.x} y1={tip.y} x2={left.x} y2={left.y} class="burst-spoke" />
+									<line x1={tip.x} y1={tip.y} x2={right.x} y2={right.y} class="burst-spoke" />
+								</g>
+							);
+						})
+					}
+				</g>
 			</g>
 		</svg>
 	</div>
@@ -282,22 +147,35 @@ const orbits = [
 		transform: translate(-50%, -50%);
 	}
 
-	.orbit {
-		transform-origin: 320px 260px;
-		opacity: var(--orbit-opacity);
-		animation: orbit-spin var(--orbit-duration) linear infinite;
+	.starburst {
+		opacity: 0.9;
 	}
 
-	.orbit.reverse {
-		animation-direction: reverse;
+	.burst-ring {
+		fill: none;
+		stroke: url(#burst-radial);
 	}
 
-	.marker.solid {
-		opacity: 0.95;
+	.burst-ring.outer {
+		stroke-width: 1.4;
+		opacity: 0.9;
 	}
 
-	.marker.hollow {
+	.burst-ring.inner {
+		stroke-width: 1.15;
+		opacity: 0.75;
+	}
+
+	.burst-ring.edge {
+		stroke-width: 1.35;
 		opacity: 0.85;
+	}
+
+	.burst-spoke {
+		stroke: url(#burst-warm);
+		stroke-width: 1.2;
+		stroke-linecap: butt;
+		opacity: 0.82;
 	}
 
 	.identity {
@@ -321,15 +199,6 @@ const orbits = [
 
 	.cta {
 		flex-shrink: 0;
-	}
-
-	@keyframes orbit-spin {
-		from {
-			transform: rotate(var(--orbit-rotate));
-		}
-		to {
-			transform: rotate(calc(var(--orbit-rotate) + 360deg));
-		}
 	}
 
 	@media (max-width: 768px) {
@@ -377,10 +246,4 @@ const orbits = [
 		}
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.orbit {
-			animation: none;
-			transform: rotate(var(--orbit-rotate));
-		}
-	}
 </style>
