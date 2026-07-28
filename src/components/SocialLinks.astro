@@ -176,10 +176,11 @@ const links = site.socialLinks.map((link) => ({
 		border: 2px solid color-mix(in srgb, var(--accent-orange) 40%, transparent);
 		background-color: var(--bg);
 		color: var(--accent-orange);
-		/* Only animate hover motion — theme colors snap to avoid border flash */
 		transition:
 			transform 0.2s ease,
-			color 0.2s ease;
+			color 0.25s ease,
+			background-color 0.25s ease,
+			border-color 0.25s ease;
 	}
 
 	.icon-link:hover {
@@ -201,13 +202,14 @@ const links = site.socialLinks.map((link) => ({
 		appearance: none;
 		-webkit-appearance: none;
 		border: 1px solid color-mix(in srgb, var(--accent-orange) 45%, transparent);
-		/* Match parent icon fill without a --bg halo ring (halo flashed on theme change) */
 		background-color: color-mix(in srgb, var(--accent-orange) 10%, var(--bg));
 		color: var(--accent-orange);
 		box-shadow: none;
 		transition:
 			transform 0.2s ease,
-			color 0.2s ease;
+			color 0.25s ease,
+			background-color 0.25s ease,
+			border-color 0.25s ease;
 	}
 
 	.action:hover {
