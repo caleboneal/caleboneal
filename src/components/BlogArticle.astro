@@ -32,7 +32,9 @@ const formattedDate = date ? formatDate(date) : null;
 
 <article class="post">
 	<div class="post-body">
-		<a class="back" href={backHref}>{backLabel}</a>
+		<a class="back" href={backHref} data-nav-direction="back" data-astro-prefetch="hover">
+			{backLabel}
+		</a>
 		<header class="header">
 			<slot name="title">
 				<h1>
@@ -49,7 +51,12 @@ const formattedDate = date ? formatDate(date) : null;
 	{(previous || next) && (
 		<nav class="post-nav" aria-label="Post navigation">
 			{previous ? (
-				<a class="nav-link prev" href={previous.href} data-astro-prefetch="hover">
+				<a
+					class="nav-link prev"
+					href={previous.href}
+					data-astro-prefetch="hover"
+					data-nav-direction="back"
+				>
 					<span class="nav-label">Previous</span>
 					<span class="nav-title">{previous.title}</span>
 				</a>
@@ -57,7 +64,12 @@ const formattedDate = date ? formatDate(date) : null;
 				<span class="nav-spacer" />
 			)}
 			{next ? (
-				<a class="nav-link next" href={next.href} data-astro-prefetch="hover">
+				<a
+					class="nav-link next"
+					href={next.href}
+					data-astro-prefetch="hover"
+					data-nav-direction="forward"
+				>
 					<span class="nav-label">Next</span>
 					<span class="nav-title">{next.title}</span>
 				</a>

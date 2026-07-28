@@ -18,7 +18,12 @@ const postNumbers = buildPostNumberMap(posts);
 		<ul class="posts">
 			{posts.map((post) => (
 				<li>
-					<a class="row" href={`/blog/${post.id}/`} data-astro-prefetch="hover">
+					<a
+						class="row"
+						href={`/blog/${post.id}/`}
+						data-astro-prefetch="hover"
+						data-nav-direction="forward"
+					>
 						<span class="title-group">
 							<span class="number">{postNumbers.get(post.id)}</span>
 							<span class="title">{post.data.title}</span>

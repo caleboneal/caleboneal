@@ -20,6 +20,10 @@
 	color-scheme: light;
 }
 
+@view-transition {
+	navigation: auto;
+}
+
 html[data-theme='dark'] {
 	--bg: #2e2c29;
 	--fg: #f2f2f2;
@@ -64,6 +68,8 @@ body {
 	color: var(--fg);
 	line-height: 1.5;
 	-webkit-font-smoothing: antialiased;
+	overflow-x: clip;
+	view-transition-name: page-pane;
 	transition:
 		background-color 0.25s ease,
 		color 0.25s ease;
@@ -111,6 +117,90 @@ button {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	::view-transition-group(page-pane) {
+		animation-duration: 280ms;
+		animation-timing-function: linear;
+	}
+
+	::view-transition-old(page-pane),
+	::view-transition-new(page-pane) {
+		animation-duration: 280ms;
+		animation-timing-function: linear;
+		animation-fill-mode: both;
+		will-change: transform, opacity;
+		backface-visibility: hidden;
+	}
+
+	html[data-nav-direction='forward']::view-transition-old(page-pane) {
+		animation-name: pane-out-left;
+	}
+
+	html[data-nav-direction='forward']::view-transition-new(page-pane) {
+		animation-name: pane-in-from-right;
+	}
+
+	html[data-nav-direction='back']::view-transition-old(page-pane) {
+		animation-name: pane-out-right;
+	}
+
+	html[data-nav-direction='back']::view-transition-new(page-pane) {
+		animation-name: pane-in-from-left;
+	}
+}
+
+@keyframes pane-out-left {
+	from {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+	92% {
+		transform: translate3d(-92%, 0, 0);
+		opacity: 1;
+	}
+	to {
+		transform: translate3d(-100%, 0, 0);
+		opacity: 0;
+	}
+}
+
+@keyframes pane-in-from-right {
+	from {
+		transform: translate3d(100%, 0, 0);
+		opacity: 1;
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+}
+
+@keyframes pane-out-right {
+	from {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+	92% {
+		transform: translate3d(92%, 0, 0);
+		opacity: 1;
+	}
+	to {
+		transform: translate3d(100%, 0, 0);
+		opacity: 0;
+	}
+}
+
+@keyframes pane-in-from-left {
+	from {
+		transform: translate3d(-100%, 0, 0);
+		opacity: 1;
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
 }
 
 .sr-only {

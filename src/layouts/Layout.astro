@@ -40,6 +40,16 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 				} catch (e) {
 					document.documentElement.setAttribute('data-theme', 'dark');
 				}
+
+				try {
+					var navDirection = sessionStorage.getItem('nav-direction');
+					document.documentElement.setAttribute(
+						'data-nav-direction',
+						navDirection === 'back' ? 'back' : 'forward',
+					);
+				} catch (e) {
+					document.documentElement.setAttribute('data-nav-direction', 'forward');
+				}
 			})();
 		</script>
 	</head>
@@ -50,5 +60,60 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 			</div>
 			<Footer />
 		</div>
+		<script is:inline>
+			(() => {
+				const root = document.documentElement;
+				const FORWARD = 'forward';
+				const BACK = 'back';
+
+				const setDirection = (direction) => {
+					root.dataset.navDirection = direction;
+					try {
+						sessionStorage.setItem('nav-direction', direction);
+					} catch {}
+				};
+
+				if (!root.dataset.navDirection) {
+					setDirection(FORWARD);
+				}
+
+				document.addEventListener('click', (event) => {
+					if (!(event.target instanceof Element)) return;
+					if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+					const link = event.target.closest('a[href]');
+					if (!link || link.target === '_blank') return;
+
+					const href = link.getAttribute('href');
+					if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+						return;
+					}
+
+					const url = new URL(href, window.location.href);
+					if (url.origin !== window.location.origin) return;
+
+					const explicitDirection = link.dataset.navDirection;
+					if (explicitDirection === BACK || explicitDirection === FORWARD) {
+						setDirection(explicitDirection);
+						return;
+					}
+
+					if (link.relList.contains('prev')) {
+						setDirection(BACK);
+						return;
+					}
+
+					if (link.relList.contains('next')) {
+						setDirection(FORWARD);
+					}
+				});
+
+				const navEntries = performance.getEntriesByType('navigation');
+				const navType = navEntries.length > 0 ? navEntries[0].type : '';
+				if (navType === 'back_forward') {
+					setDirection(BACK);
+				}
+			})();
+		</script>
 	</body>
 </html>
