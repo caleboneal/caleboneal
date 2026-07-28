@@ -49,6 +49,7 @@ html[data-theme='dark'] {
 
 html {
 	scroll-behavior: smooth;
+	font-size: 125%;
 }
 
 html,
