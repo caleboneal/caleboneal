@@ -16,13 +16,13 @@ const postNumbers = buildPostNumberMap(posts);
 		<p class="empty">No posts yet.</p>
 	) : (
 		<ul class="posts">
-			{posts.map((post) => (
-				<li>
+			{posts.map((post, index) => (
+				<li style={`--i: ${index}`}>
 					<a
 						class="row"
 						href={`/blog/${post.id}/`}
 						data-astro-prefetch="hover"
-						data-nav-direction="forward"
+						data-nav-transition="fade"
 					>
 						<span class="title-group">
 							<span class="number">{postNumbers.get(post.id)}</span>
@@ -44,6 +44,32 @@ const postNumbers = buildPostNumberMap(posts);
 		list-style: none;
 		margin: 0;
 		padding: 0;
+	}
+
+	.posts li {
+		opacity: 0;
+		transform: translateY(-0.55rem);
+		animation: post-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: calc(80ms + var(--i, 0) * 55ms);
+	}
+
+	@keyframes post-enter {
+		from {
+			opacity: 0;
+			transform: translateY(-0.55rem);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.posts li {
+			opacity: 1;
+			transform: none;
+			animation: none;
+		}
 	}
 
 	.row {

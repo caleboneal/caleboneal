@@ -32,7 +32,7 @@ const formattedDate = date ? formatDate(date) : null;
 
 <article class="post">
 	<div class="post-body">
-		<a class="back" href={backHref} data-nav-direction="back" data-astro-prefetch="hover">
+		<a class="back" href={backHref} data-nav-transition="fade" data-astro-prefetch="hover">
 			{backLabel}
 		</a>
 		<header class="header">
@@ -55,7 +55,7 @@ const formattedDate = date ? formatDate(date) : null;
 					class="nav-link prev"
 					href={previous.href}
 					data-astro-prefetch="hover"
-					data-nav-direction="back"
+					data-nav-transition="slide-back"
 				>
 					<span class="nav-label">Previous</span>
 					<span class="nav-title">{previous.title}</span>
@@ -68,7 +68,7 @@ const formattedDate = date ? formatDate(date) : null;
 					class="nav-link next"
 					href={next.href}
 					data-astro-prefetch="hover"
-					data-nav-direction="forward"
+					data-nav-transition="slide-forward"
 				>
 					<span class="nav-label">Next</span>
 					<span class="nav-title">{next.title}</span>
@@ -92,6 +92,89 @@ const formattedDate = date ? formatDate(date) : null;
 
 	.post-body {
 		max-width: 42rem;
+	}
+
+	.back,
+	.header,
+	.content :global(> *),
+	.post-nav {
+		opacity: 0;
+		transform: translateY(-0.55rem);
+		animation: article-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	.back {
+		animation-delay: 80ms;
+	}
+
+	.header {
+		animation-delay: 135ms;
+	}
+
+	.content :global(> *:nth-child(1)) {
+		animation-delay: 190ms;
+	}
+	.content :global(> *:nth-child(2)) {
+		animation-delay: 245ms;
+	}
+	.content :global(> *:nth-child(3)) {
+		animation-delay: 300ms;
+	}
+	.content :global(> *:nth-child(4)) {
+		animation-delay: 355ms;
+	}
+	.content :global(> *:nth-child(5)) {
+		animation-delay: 410ms;
+	}
+	.content :global(> *:nth-child(6)) {
+		animation-delay: 465ms;
+	}
+	.content :global(> *:nth-child(7)) {
+		animation-delay: 520ms;
+	}
+	.content :global(> *:nth-child(8)) {
+		animation-delay: 575ms;
+	}
+	.content :global(> *:nth-child(9)) {
+		animation-delay: 630ms;
+	}
+	.content :global(> *:nth-child(10)) {
+		animation-delay: 685ms;
+	}
+	.content :global(> *:nth-child(11)) {
+		animation-delay: 740ms;
+	}
+	.content :global(> *:nth-child(12)) {
+		animation-delay: 795ms;
+	}
+	.content :global(> *:nth-child(n + 13)) {
+		animation-delay: 850ms;
+	}
+
+	.post-nav {
+		animation-delay: 410ms;
+	}
+
+	@keyframes article-enter {
+		from {
+			opacity: 0;
+			transform: translateY(-0.55rem);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.back,
+		.header,
+		.content :global(> *),
+		.post-nav {
+			opacity: 1;
+			transform: none;
+			animation: none;
+		}
 	}
 
 	.back {

@@ -47,13 +47,17 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 				}
 
 				try {
-					var navDirection = sessionStorage.getItem('nav-direction');
+					var navTransition = sessionStorage.getItem('nav-transition');
 					document.documentElement.setAttribute(
-						'data-nav-direction',
-						navDirection === 'back' ? 'back' : 'forward',
+						'data-nav-transition',
+						navTransition === 'slide-forward' ||
+							navTransition === 'slide-back' ||
+							navTransition === 'fade'
+							? navTransition
+							: 'fade',
 					);
 				} catch (e) {
-					document.documentElement.setAttribute('data-nav-direction', 'forward');
+					document.documentElement.setAttribute('data-nav-transition', 'fade');
 				}
 			})();
 		</script>
@@ -68,18 +72,21 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 		<script is:inline>
 			(() => {
 				const root = document.documentElement;
-				const FORWARD = 'forward';
-				const BACK = 'back';
+				const FADE = 'fade';
+				const SLIDE_FORWARD = 'slide-forward';
+				const SLIDE_BACK = 'slide-back';
+				const VALID = new Set([FADE, SLIDE_FORWARD, SLIDE_BACK]);
 
-				const setDirection = (direction) => {
-					root.dataset.navDirection = direction;
+				const setTransition = (transition) => {
+					const next = VALID.has(transition) ? transition : FADE;
+					root.dataset.navTransition = next;
 					try {
-						sessionStorage.setItem('nav-direction', direction);
+						sessionStorage.setItem('nav-transition', next);
 					} catch {}
 				};
 
-				if (!root.dataset.navDirection) {
-					setDirection(FORWARD);
+				if (!root.dataset.navTransition) {
+					setTransition(FADE);
 				}
 
 				document.addEventListener('click', (event) => {
@@ -97,26 +104,29 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 					const url = new URL(href, window.location.href);
 					if (url.origin !== window.location.origin) return;
 
-					const explicitDirection = link.dataset.navDirection;
-					if (explicitDirection === BACK || explicitDirection === FORWARD) {
-						setDirection(explicitDirection);
+					const explicit = link.dataset.navTransition;
+					if (VALID.has(explicit)) {
+						setTransition(explicit);
 						return;
 					}
 
 					if (link.relList.contains('prev')) {
-						setDirection(BACK);
+						setTransition(SLIDE_BACK);
 						return;
 					}
 
 					if (link.relList.contains('next')) {
-						setDirection(FORWARD);
+						setTransition(SLIDE_FORWARD);
+						return;
 					}
+
+					setTransition(FADE);
 				});
 
 				const navEntries = performance.getEntriesByType('navigation');
 				const navType = navEntries.length > 0 ? navEntries[0].type : '';
 				if (navType === 'back_forward') {
-					setDirection(BACK);
+					setTransition(FADE);
 				}
 			})();
 		</script>
