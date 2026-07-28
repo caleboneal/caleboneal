@@ -14,6 +14,12 @@ const burstEdge = burstOuter * 0.88;
 const glowRadius = 118;
 const innerGlowEdge = (burstInner / glowRadius) * 100;
 
+const satellites = [
+	{ orbit: 156, size: 5.5, duration: 39.1, reverse: false, start: 0 },
+	{ orbit: 174, size: 4.2, duration: 52.9, reverse: true, start: 120 },
+	{ orbit: 194, size: 6.5, duration: 66.7, reverse: false, start: 240 },
+] as const;
+
 /** Point on a circle at degrees (0 = right, CCW). */
 function point(radius: number, deg: number) {
 	const rad = (deg * Math.PI) / 180;
@@ -22,10 +28,14 @@ function point(radius: number, deg: number) {
 		y: +(cy + radius * Math.sin(rad)).toFixed(2),
 	};
 }
+
+function rayPulseDuration(index: number) {
+	return +((5.5 + ((Math.sin((index + 1) * 2.17) + 1) / 2) * 7.5 + (index % 5) * 0.55) * 1.15).toFixed(2);
+}
 ---
 
-<div class="orbit-stage" aria-hidden="true">
-	<svg class="orbits" viewBox="0 0 640 520" fill="none">
+<div class="orbit-stage starburst-enter" aria-hidden="true">
+	<svg class="orbits" viewBox="0 0 640 520">
 		<defs>
 			<linearGradient id="burst-warm" x1="120" y1="80" x2="520" y2="400" gradientUnits="userSpaceOnUse">
 				<stop offset="0%" stop-color="var(--accent-orange)"></stop>
@@ -57,35 +67,40 @@ function point(radius: number, deg: number) {
 			</filter>
 			<filter
 				id="orbit-grain"
-				x="-25%"
-				y="-25%"
-				width="150%"
-				height="150%"
+				x="-45%"
+				y="-45%"
+				width="190%"
+				height="190%"
+				filterUnits="objectBoundingBox"
 				color-interpolation-filters="sRGB"
 			>
 				<feTurbulence
 					type="fractalNoise"
-					baseFrequency="1.35"
-					numOctaves="4"
+					baseFrequency="1.1"
+					numOctaves="5"
+					seed="7"
 					stitchTiles="stitch"
-					result="coarse"></feTurbulence>
-				<feTurbulence
-					type="fractalNoise"
-					baseFrequency="2.8"
-					numOctaves="2"
-					stitchTiles="stitch"
-					result="fine"></feTurbulence>
-				<feBlend in="coarse" in2="fine" mode="multiply" result="noise"></feBlend>
+					result="noise"
+				></feTurbulence>
+				<feDisplacementMap
+					in="SourceGraphic"
+					in2="noise"
+					scale="5.5"
+					xChannelSelector="R"
+					yChannelSelector="G"
+					result="displaced"
+				></feDisplacementMap>
 				<feColorMatrix
 					in="noise"
 					type="matrix"
-					values="0 0 0 0 0.52
-                  0 0 0 0 0.32
-                  0 0 0 0 0.26
-                  0 0 0 0.62 0"
-					result="mono"></feColorMatrix>
-				<feBlend in="SourceGraphic" in2="mono" mode="soft-light" result="grained"></feBlend>
-				<feComposite in="grained" in2="SourceGraphic" operator="in"></feComposite>
+					values="1 0 0 0 -0.35
+                  1 0 0 0 -0.35
+                  1 0 0 0 -0.35
+                  0 0 0 1.4 0"
+					result="grain"
+				></feColorMatrix>
+				<feBlend in="displaced" in2="grain" mode="hard-light" result="speckled"></feBlend>
+				<feComposite in="speckled" in2="displaced" operator="in"></feComposite>
 			</filter>
 		</defs>
 
@@ -106,14 +121,77 @@ function point(radius: number, deg: number) {
 					Array.from({ length: rayCount }).map((_, i) => {
 						const deg = i * (360 / rayCount);
 						const outer = rayOuterRadius(i);
+						const outerMin = outer * 0.78;
+						const outerMax = outer * 1.1;
 						const spread = 1.7 + ((Math.sin((i + 4) * 1.17) + 1) / 2) * 2.6;
 						const tip = point(outer, deg);
+						const tipMin = point(outerMin, deg);
+						const tipMax = point(outerMax, deg);
 						const left = point(burstInner, deg - spread);
 						const right = point(burstInner, deg + spread);
+						const pulseDur = rayPulseDuration(i);
+						const tipValuesX = `${tipMin.x};${tipMax.x};${tipMin.x}`;
+						const tipValuesY = `${tipMin.y};${tipMax.y};${tipMin.y}`;
 						return (
 							<g class="burst-ray">
-								<line x1={tip.x} y1={tip.y} x2={left.x} y2={left.y} class="burst-spoke" />
-								<line x1={tip.x} y1={tip.y} x2={right.x} y2={right.y} class="burst-spoke" />
+								<line x1={tip.x} y1={tip.y} x2={left.x} y2={left.y} class="burst-spoke">
+									<animate
+										attributeName="x1"
+										values={tipValuesX}
+										dur={`${pulseDur}s`}
+										repeatCount="indefinite"
+									/>
+									<animate
+										attributeName="y1"
+										values={tipValuesY}
+										dur={`${pulseDur}s`}
+										repeatCount="indefinite"
+									/>
+								</line>
+								<line x1={tip.x} y1={tip.y} x2={right.x} y2={right.y} class="burst-spoke">
+									<animate
+										attributeName="x1"
+										values={tipValuesX}
+										dur={`${pulseDur}s`}
+										repeatCount="indefinite"
+									/>
+									<animate
+										attributeName="y1"
+										values={tipValuesY}
+										dur={`${pulseDur}s`}
+										repeatCount="indefinite"
+									/>
+								</line>
+							</g>
+						);
+					})
+				}
+			</g>
+			<g class="satellite-field" filter="url(#orbit-grain)">
+				{
+					satellites.map((sat) => {
+						const from = sat.reverse ? 360 : 0;
+						const to = sat.reverse ? 0 : 360;
+						const body = point(sat.orbit, sat.start);
+						return (
+							<g>
+								<animateTransform
+									attributeName="transform"
+									type="rotate"
+									from={`${from} ${cx} ${cy}`}
+									to={`${to} ${cx} ${cy}`}
+									dur={`${sat.duration}s`}
+									repeatCount="indefinite"
+								/>
+								<circle
+									class="satellite"
+									cx={body.x}
+									cy={body.y}
+									r={sat.size}
+									fill="none"
+									stroke="var(--accent-rose)"
+									stroke-width="1.6"
+								/>
 							</g>
 						);
 					})
@@ -161,6 +239,13 @@ function point(radius: number, deg: number) {
 		stroke: url(#burst-warm);
 		stroke-width: 1.2;
 		stroke-linecap: butt;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.satellite-field :global(animateTransform),
+		.burst-ray :global(animate) {
+			display: none;
+		}
 	}
 
 	@media (max-width: 768px) {
