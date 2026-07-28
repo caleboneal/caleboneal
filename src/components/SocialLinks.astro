@@ -145,7 +145,9 @@ const links = site.socialLinks.map((link) => ({
 	@media (max-width: 768px) {
 		.socials {
 			justify-content: flex-start;
-			padding: 0.35rem 0.45rem 0.35rem 0;
+			flex-wrap: nowrap;
+			gap: 0.35rem;
+			padding: 0.2rem 0;
 		}
 
 		.action {
@@ -154,6 +156,16 @@ const links = site.socialLinks.map((link) => ({
 
 		.social.has-action {
 			margin-right: 0;
+		}
+
+		.icon-link {
+			width: 2.2rem;
+			height: 2.2rem;
+		}
+
+		.icon-link :global(.icon) {
+			width: 0.95rem !important;
+			height: 0.95rem !important;
 		}
 	}
 
