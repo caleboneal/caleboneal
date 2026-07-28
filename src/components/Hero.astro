@@ -1,106 +1,12 @@
 ---
 import { site } from '../data/site';
+import HeroStarburst from './HeroStarburst.astro';
 import SocialLinks from './SocialLinks.astro';
-
-const cx = 320;
-const cy = 260;
-const burstInner = 66;
-const rayCount = 36;
-
-function rayOuterRadius(index: number) {
-	const lengthSeed = Math.sin((index + 1) * 1.9) * 0.5 + Math.cos((index + 2) * 0.73) * 0.5;
-	return 142 + ((lengthSeed + 1) / 2) * 64;
-}
-
-const burstOuter = Math.max(...Array.from({ length: rayCount }, (_, i) => rayOuterRadius(i)));
-const burstEdge = burstOuter * 0.88;
-
-/** Point on a circle at degrees (0 = right, CCW). */
-function point(radius: number, deg: number) {
-	const rad = (deg * Math.PI) / 180;
-	return {
-		x: +(cx + radius * Math.cos(rad)).toFixed(2),
-		y: +(cy + radius * Math.sin(rad)).toFixed(2),
-	};
-}
 ---
 
 <section class="hero">
 	<div class="glow" aria-hidden="true"></div>
-	<div class="orbit-stage" aria-hidden="true">
-		<svg class="orbits" viewBox="0 0 640 520" fill="none">
-			<defs>
-				<linearGradient id="burst-warm" x1="120" y1="80" x2="520" y2="400" gradientUnits="userSpaceOnUse">
-					<stop offset="0%" stop-color="var(--accent-orange)"></stop>
-					<stop offset="42%" stop-color="var(--accent-rose)"></stop>
-					<stop offset="78%" stop-color="var(--accent-orange)"></stop>
-					<stop offset="100%" stop-color="var(--accent-rose)"></stop>
-				</linearGradient>
-				<radialGradient id="burst-radial" cx={cx} cy={cy} r={burstEdge} gradientUnits="userSpaceOnUse">
-					<stop offset="0%" stop-color="var(--accent-rose)"></stop>
-					<stop offset="55%" stop-color="var(--accent-orange)"></stop>
-					<stop offset="100%" stop-color="var(--accent-rose)"></stop>
-				</radialGradient>
-				<filter
-					id="orbit-grain"
-					x="-25%"
-					y="-25%"
-					width="150%"
-					height="150%"
-					color-interpolation-filters="sRGB"
-				>
-					<feTurbulence
-						type="fractalNoise"
-						baseFrequency="1.35"
-						numOctaves="4"
-						stitchTiles="stitch"
-						result="coarse"></feTurbulence>
-					<feTurbulence
-						type="fractalNoise"
-						baseFrequency="2.8"
-						numOctaves="2"
-						stitchTiles="stitch"
-						result="fine"></feTurbulence>
-					<feBlend in="coarse" in2="fine" mode="multiply" result="noise"></feBlend>
-					<feColorMatrix
-						in="noise"
-						type="matrix"
-						values="0 0 0 0 0.52
-                  0 0 0 0 0.32
-                  0 0 0 0 0.26
-                  0 0 0 0.62 0"
-						result="mono"></feColorMatrix>
-					<feBlend in="SourceGraphic" in2="mono" mode="soft-light" result="grained"></feBlend>
-					<feComposite in="grained" in2="SourceGraphic" operator="in"></feComposite>
-				</filter>
-			</defs>
-
-			<g class="orbit-field" filter="url(#orbit-grain)">
-				<g class="starburst">
-					<circle cx={cx} cy={cy} r="128" class="burst-ring outer" />
-					<circle cx={cx} cy={cy} r={burstInner} class="burst-ring inner" />
-					<circle cx={cx} cy={cy} r={burstEdge} class="burst-ring edge" />
-					{
-						Array.from({ length: rayCount }).map((_, i) => {
-							const deg = i * (360 / rayCount);
-							const outer = rayOuterRadius(i);
-							const spread = 1.7 + ((Math.sin((i + 4) * 1.17) + 1) / 2) * 2.6;
-							const tip = point(outer, deg);
-							const left = point(burstInner, deg - spread);
-							const right = point(burstInner, deg + spread);
-							return (
-								<g class="burst-ray">
-									<line x1={tip.x} y1={tip.y} x2={left.x} y2={left.y} class="burst-spoke" />
-									<line x1={tip.x} y1={tip.y} x2={right.x} y2={right.y} class="burst-spoke" />
-								</g>
-							);
-						})
-					}
-				</g>
-			</g>
-		</svg>
-	</div>
-
+	<HeroStarburst />
 	<div class="identity">
 		<h1 class="name">{site.name}</h1>
 		<div class="cta">
@@ -129,53 +35,6 @@ function point(radius: number, deg: number) {
 			radial-gradient(circle 30% at 58% 52%, var(--hero-glow-soft), transparent 70%);
 		pointer-events: none;
 		z-index: 0;
-	}
-
-	.orbit-stage {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		pointer-events: none;
-	}
-
-	.orbits {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: min(38rem, 96%);
-		max-height: 94%;
-		transform: translate(-50%, -50%);
-	}
-
-	.starburst {
-		opacity: 0.9;
-	}
-
-	.burst-ring {
-		fill: none;
-		stroke: url(#burst-radial);
-	}
-
-	.burst-ring.outer {
-		stroke-width: 1.4;
-		opacity: 0.9;
-	}
-
-	.burst-ring.inner {
-		stroke-width: 1.15;
-		opacity: 0.75;
-	}
-
-	.burst-ring.edge {
-		stroke-width: 1.35;
-		opacity: 0.85;
-	}
-
-	.burst-spoke {
-		stroke: url(#burst-warm);
-		stroke-width: 1.2;
-		stroke-linecap: butt;
-		opacity: 0.82;
 	}
 
 	.identity {
@@ -215,25 +74,6 @@ function point(radius: number, deg: number) {
 				radial-gradient(circle 40% at 55% 32%, var(--hero-glow-soft), transparent 70%);
 		}
 
-		.orbit-stage {
-			position: relative;
-			inset: auto;
-			display: grid;
-			place-items: center;
-			width: 100%;
-			height: clamp(14rem, 42vw, 18rem);
-			flex-shrink: 0;
-		}
-
-		.orbits {
-			position: relative;
-			left: auto;
-			top: auto;
-			width: min(22rem, 88%);
-			max-height: 100%;
-			transform: none;
-		}
-
 		.identity {
 			flex-direction: column;
 			align-items: flex-start;
@@ -245,5 +85,4 @@ function point(radius: number, deg: number) {
 			font-size: clamp(1.7rem, 8vw, 2.35rem);
 		}
 	}
-
 </style>
