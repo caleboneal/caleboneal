@@ -23,6 +23,7 @@ const postNumbers = buildPostNumberMap(posts);
 							<span class="number">{postNumbers.get(post.id)}</span>
 							<span class="title">{post.data.title}</span>
 						</span>
+						<span class="row-rule" aria-hidden="true"></span>
 						<time class="date" datetime={post.data.pubDate.toISOString()}>
 							{formatDate(post.data.pubDate)}
 						</time>
@@ -40,16 +41,11 @@ const postNumbers = buildPostNumberMap(posts);
 		padding: 0;
 	}
 
-	.posts li + li {
-		border-top: 1px solid var(--hairline);
-	}
-
 	.row {
 		display: flex;
 		align-items: baseline;
-		justify-content: space-between;
-		gap: 1.5rem;
-		padding: 1.35rem 0;
+		gap: 0.5rem;
+		padding: 0.2rem 0;
 	}
 
 	.posts li:first-child .row {
@@ -62,6 +58,14 @@ const postNumbers = buildPostNumberMap(posts);
 
 	.row:hover .title::after {
 		transform: scaleX(1);
+	}
+
+	.row-rule {
+		flex: 1;
+		height: 1px;
+		min-width: 1.5rem;
+		background: var(--hairline);
+		align-self: center;
 	}
 
 	.title-group {
@@ -124,8 +128,14 @@ const postNumbers = buildPostNumberMap(posts);
 		.row {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: 0.35rem;
-			padding: 1.15rem 0;
+			gap: 0.15rem;
+			padding: 0.15rem 0;
+		}
+
+		.row-rule {
+			width: 100%;
+			min-width: 0;
+			margin: 0.15rem 0;
 		}
 	}
 </style>

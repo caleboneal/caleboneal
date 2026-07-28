@@ -3,25 +3,35 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import BlogArticle from '../../components/BlogArticle.astro';
 import BlogLink from '../../components/BlogLink.astro';
-import { buildPostNumberMap } from '../../data/blog';
+import { buildPostNumberMap, getAdjacentPosts } from '../../data/blog';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', ({ data }) => !data.draft);
 	const postNumbers = buildPostNumberMap(posts);
 	return posts.map((post) => ({
 		params: { slug: post.id },
-		props: { post, number: postNumbers.get(post.id) },
+		props: {
+			post,
+			number: postNumbers.get(post.id),
+			...getAdjacentPosts(posts, post.id),
+		},
 	}));
 }
 
-const { post, number } = Astro.props;
+const { post, number, previous, next } = Astro.props;
 const { Content } = await render(post, {
 	components: { BlogLink },
 });
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-	<BlogArticle title={post.data.title} date={post.data.pubDate} number={number}>
+<Layout title={post.data.title}>
+	<BlogArticle
+		title={post.data.title}
+		date={post.data.pubDate}
+		number={number}
+		previous={previous}
+		next={next}
+	>
 		<Content />
 	</BlogArticle>
 </Layout>

@@ -2,11 +2,17 @@
 import { formatDate } from '../utils/formatDate';
 import '../styles/prose.css';
 
+interface AdjacentPost {
+	href: string;
+	title: string;
+}
+
 interface Props {
 	title: string;
-	description?: string;
 	date?: Date;
 	number?: number;
+	previous?: AdjacentPost;
+	next?: AdjacentPost;
 	backHref?: string;
 	backLabel?: string;
 }
@@ -15,6 +21,8 @@ const {
 	title,
 	date,
 	number,
+	previous,
+	next,
 	backHref = '/',
 	backLabel = '← Back',
 } = Astro.props;
@@ -23,24 +31,54 @@ const formattedDate = date ? formatDate(date) : null;
 ---
 
 <article class="post">
-	<a class="back" href={backHref}>{backLabel}</a>
-	<header class="header">
-		<slot name="title">
-			<h1>
-				{number !== undefined && <span class="number">{number}</span>}
-				{title}
-			</h1>
-		</slot>
-		{formattedDate && date && <time datetime={date.toISOString()}>{formattedDate}</time>}
-	</header>
-	<div class="content prose">
-		<slot />
+	<div class="post-body">
+		<a class="back" href={backHref}>{backLabel}</a>
+		<header class="header">
+			<slot name="title">
+				<h1>
+					{number !== undefined && <span class="number">{number}</span>}
+					{title}
+				</h1>
+			</slot>
+			{formattedDate && date && <time datetime={date.toISOString()}>{formattedDate}</time>}
+		</header>
+		<div class="content prose">
+			<slot />
+		</div>
 	</div>
+	{(previous || next) && (
+		<nav class="post-nav" aria-label="Post navigation">
+			{previous ? (
+				<a class="nav-link prev" href={previous.href} data-astro-prefetch="hover">
+					<span class="nav-label">Previous</span>
+					<span class="nav-title">{previous.title}</span>
+				</a>
+			) : (
+				<span class="nav-spacer" />
+			)}
+			{next ? (
+				<a class="nav-link next" href={next.href} data-astro-prefetch="hover">
+					<span class="nav-label">Next</span>
+					<span class="nav-title">{next.title}</span>
+				</a>
+			) : (
+				<span class="nav-spacer" />
+			)}
+		</nav>
+	)}
 </article>
 
 <style>
 	.post {
-		padding: 2.5rem 0 2.5rem;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		width: 100%;
+		min-height: 100%;
+		padding: 2.5rem 0;
+	}
+
+	.post-body {
 		max-width: 42rem;
 	}
 
@@ -87,5 +125,80 @@ const formattedDate = date ? formatDate(date) : null;
 	.header time {
 		color: var(--muted);
 		font-size: 0.9rem;
+	}
+
+	.post-nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1.5rem;
+		width: 100%;
+		margin-top: auto;
+		padding-top: 2.5rem;
+	}
+
+	.nav-spacer {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.nav-link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		max-width: min(45%, 22rem);
+		color: var(--muted);
+		transition: color 0.2s ease;
+	}
+
+	.nav-link:hover {
+		color: var(--accent-rose);
+	}
+
+	.nav-link.next {
+		margin-left: auto;
+		align-items: flex-end;
+		text-align: right;
+	}
+
+	.nav-label {
+		font-size: 0.75rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.nav-title {
+		font-size: 0.95rem;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		line-height: 1.35;
+		color: var(--fg);
+		transition: color 0.2s ease;
+	}
+
+	.nav-link:hover .nav-title {
+		color: var(--accent-rose);
+	}
+
+	@media (max-width: 640px) {
+		.post-nav {
+			flex-direction: column;
+			gap: 1.25rem;
+		}
+
+		.nav-link {
+			max-width: 100%;
+		}
+
+		.nav-link.next {
+			margin-left: 0;
+			align-items: flex-start;
+			text-align: left;
+		}
+
+		.nav-spacer {
+			display: none;
+		}
 	}
 </style>

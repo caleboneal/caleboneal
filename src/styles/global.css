@@ -112,17 +112,6 @@ button {
 	width: 100%;
 }
 
-.frame::after {
-	content: '';
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 1px;
-	background: var(--hairline);
-	pointer-events: none;
-}
-
 .sr-only {
 	position: absolute;
 	width: 1px;
