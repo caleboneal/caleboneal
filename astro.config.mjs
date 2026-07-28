@@ -2,8 +2,8 @@
 import { defineConfig } from 'astro/config';
 
 import cloudflare from '@astrojs/cloudflare';
-
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import calebDark from './src/styles/shiki-caleb-dark.json';
 import calebLight from './src/styles/shiki-caleb-light.json';
 
@@ -13,7 +13,12 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: 'cloudflare'
   }),
-  integrations: [mdx()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => !page.includes('/styleguide'),
+    }),
+  ],
   prefetch: true,
   markdown: {
     shikiConfig: {

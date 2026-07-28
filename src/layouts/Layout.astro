@@ -7,10 +7,12 @@ import '../styles/global.css';
 interface Props {
 	title?: string;
 	description?: string;
+	canonicalURL?: string | URL;
 }
 
-const { title = site.name, description = site.description } = Astro.props;
+const { title = site.name, description = site.description, canonicalURL } = Astro.props;
 const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
+const canonical = new URL(canonicalURL ?? Astro.url.pathname, Astro.site ?? site.url).href;
 ---
 
 <!doctype html>
@@ -19,6 +21,7 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={canonical} />
 		<link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
