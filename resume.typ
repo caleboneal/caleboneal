@@ -20,7 +20,7 @@
   // phone: phone,
   personal-site: personal-site,
   // linkedin: linkedin,
-  accent-color: "#26428b",
+  accent-color: "#000000",
   font: "Calibri",
   paper: "us-letter",
   author-position: left,
@@ -113,6 +113,6 @@
 - Led a team of 10 programmers using GitHub's pull request and issue systems for code review
 
 == Skills
-- *Programming*: Python, C, C++, Java, JavaScript, SAS, R, Rust, Julia, Zig
-- *Tools*: Git, CI/CD, Linux, Docker
-- *CAD*: Fusion 360, OnShape, Altium
+- *Programming*: Python, C, C++, Java, JavaScript, SAS, Rust, Zig
+- *Tools*: Git, CI/CD, Linux, KiCad, QEMU
+// - *CAD*: Fusion 360, OnShape, Altium

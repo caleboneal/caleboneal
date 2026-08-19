@@ -150,23 +150,12 @@
   // Makes dates on upper right like rest of components
   consistent: false,
 ) = {
-  if consistent {
-    // edu-constant style (dates top-right, location bottom-right)
-    generic-two-by-two(
-      top-left: strong(institution),
-      top-right: dates,
-      bottom-left: emph(degree),
-      bottom-right: emph(location),
-    )
-  } else {
-    // original edu style (location top-right, dates bottom-right)
-    generic-two-by-two(
-      top-left: strong(institution),
-      top-right: location,
-      bottom-left: emph(degree),
-      bottom-right: emph(dates),
-    )
-  }
+  generic-two-by-two(
+    top-left: strong(degree),
+    top-right: dates,
+    bottom-left: institution,
+    bottom-right: if gpa != "" { emph("GPA: " + gpa) } else { emph(location) },
+  )
 }
 
 #let work(
