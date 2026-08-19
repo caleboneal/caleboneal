@@ -36,7 +36,7 @@
   location: "Charlottesville, VA",
   dates: "Expected May 2028",
   degree: "Bachelor of Science in Computer Engineering",
-  gpa: "4.0",
+  gpa: "3.94/4.00",
 )
 
 #edu(
@@ -44,7 +44,7 @@
   location: "Annandale, VA",
   dates: "June 2025",
   degree: "Associate of Science in Computer Science",
-  gpa: "3.9",
+  gpa: "3.84/4.00",
 )
 
 // #edu(
@@ -63,8 +63,8 @@
   company: "Virginia Tech Qualcomm Thinkabit Lab",
   dates: dates-helper(start-date: "August 2024", end-date: "May 2025"),
 )
-- Programmed a 3-phase brushless DC motor simulation with a web interface to educate robotics students
-- Assisted in lab tasks like cleaning, organizing, leading school groups, and moving the lab between buildings
+- Built an interactive web-based simulation of a three-phase brushless DC motor to teach robotics students motor-control fundamentals using React and Rust
+- Assisted in lab tasks like cleaning, organizing, developing teaching materials, leading school groups, and moving the lab between buildings
 
 #work(
   title: "Teaching Assistant",
@@ -72,8 +72,8 @@
   company: "Arlington Career Center",
   dates: dates-helper(start-date: "January 2025", end-date: "May 2025"),
 )
-- Taught a college level statistics class as the primary instructor, covering the principles of statistical analysis
-- Graded and reviewed students' assignments, including a poster session of students' individual research of a statistical relationship in real world datasets
+- Taught a 15 student college statistics course, teaching statistical analysis and real-world data interpretation
+- Evaluated assignements and research posters, critiquing students' analysis of relationship in real-world datasets
 
 #work(
   title: "High School Intern",
@@ -81,27 +81,26 @@
   company: "Department of Defense",
   dates: dates-helper(start-date: "June 2024", end-date: "August 2024"),
 )
-- Redesigned a department website to guide agency management to enterprise architecture visualization tools
-- Migrated the team's Git repositories between Git hosts, ensuring commit history was preserved
-- Collaborated with the team's Scrum Master to follow Agile software development best practices
+- Redesigned a department website to guide agency management to enterprise architecture data visualization tools
+- Migrated the team's Git repositories between Git hosts, enabling new CI/CD features and better DX for the team
+- Collaborated with the team's Scrum Master to follow Agile principles including regular code reviews and sprint planning
 
 == Projects
 
 #project(
   name: "NASA App Development Challenge",
   role: "PyCon US 2024 Poster Presentation",
-  dates: "2024",
+  dates: dates-helper(start-date: "October 2023", end-date: "May 2024"),
 )
-- Developed a 3D interactive simulation of lunar surface exploration for the planned 2027 NASA Artemis III mission to the lunar south pole
-- Presented our simulation to software industry professionals at the PyCon 2024 poster presentation session
-- Collaborated with a team to develop the app and manage team finances and logistics
+- Developed a 3D interactive simulation of lunar surface exploration for a potential landing site for NASA Artemis III mission
+- Selected to present our simulation to software professionals at the PyCon US 2024 poster presentation session
 
 #project(
   name: "Martian Crater Data Analysis",
 )
-- Analyzed a dataset of 350,000 Martian craters to find a statistical relationship between crater eccentricity and its latitude on Mars, likely as a result of volcanic activity on the Martian surface
-- Programmed in SAS to perform statistical analysis and generate diagrams showing relevant data
-- Presented results to peers for review and at a local community college for a larger audience
+- Analyzed a dataset of 350,000 Martian craters and found a statistical relationship between crater eccentricity and its latitude on Mars using a pearson correlation test
+- Used SAS to perform statistical analysis and visualize geographic trends in the dataset
+- Presented findings for peer review and to an audience at Northern Virginia Community College
 
 #project(
   name: "Robotics Team",
