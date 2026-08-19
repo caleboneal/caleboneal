@@ -12,7 +12,9 @@
 		"astro": "astro",
 		"generate-types": "wrangler types",
 		"deploy": "astro build && wrangler deploy",
-		"cf-typegen": "wrangler types"
+		"cf-typegen": "wrangler types",
+		"resume": "typst compile resume.typ public/resume.pdf",
+		"resume-watch": "typst watch resume.typ public/resume.pdf"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.10",
