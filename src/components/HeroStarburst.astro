@@ -10,15 +10,10 @@ function rayOuterRadius(index: number) {
 }
 
 const burstOuter = Math.max(...Array.from({ length: rayCount }, (_, i) => rayOuterRadius(i)));
-const burstEdge = burstOuter * 0.88;
+const burstEdge = burstOuter * 0.78;
 const glowRadius = 118;
 const innerGlowEdge = (burstInner / glowRadius) * 100;
-
-const satellites = [
-	{ orbit: 156, size: 5.5, duration: 39.1, reverse: false, start: 0 },
-	{ orbit: 174, size: 4.2, duration: 52.9, reverse: true, start: 120 },
-	{ orbit: 194, size: 6.5, duration: 66.7, reverse: false, start: 240 },
-] as const;
+const midRing = 128;
 
 /** Point on a circle at degrees (0 = right, CCW). */
 function point(radius: number, deg: number) {
@@ -114,7 +109,7 @@ function rayPulseDuration(index: number) {
 				filter="url(#inner-glow-blur)"
 			/>
 			<g class="starburst" filter="url(#orbit-grain)">
-				<circle cx={cx} cy={cy} r="128" class="burst-ring outer" />
+				<circle cx={cx} cy={cy} r={midRing} class="burst-ring outer" />
 				<circle cx={cx} cy={cy} r={burstInner} class="burst-ring inner" />
 				<circle cx={cx} cy={cy} r={burstEdge} class="burst-ring edge" />
 				{
@@ -167,36 +162,6 @@ function rayPulseDuration(index: number) {
 					})
 				}
 			</g>
-			<g class="satellite-field" filter="url(#orbit-grain)">
-				{
-					satellites.map((sat) => {
-						const from = sat.reverse ? 360 : 0;
-						const to = sat.reverse ? 0 : 360;
-						const body = point(sat.orbit, sat.start);
-						return (
-							<g>
-								<animateTransform
-									attributeName="transform"
-									type="rotate"
-									from={`${from} ${cx} ${cy}`}
-									to={`${to} ${cx} ${cy}`}
-									dur={`${sat.duration}s`}
-									repeatCount="indefinite"
-								/>
-								<circle
-									class="satellite"
-									cx={body.x}
-									cy={body.y}
-									r={sat.size}
-									fill="none"
-									stroke="var(--accent-rose)"
-									stroke-width="1.6"
-								/>
-							</g>
-						);
-					})
-				}
-			</g>
 		</g>
 	</svg>
 </div>
@@ -242,7 +207,6 @@ function rayPulseDuration(index: number) {
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.satellite-field :global(animateTransform),
 		.burst-ray :global(animate) {
 			display: none;
 		}
