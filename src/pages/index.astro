@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
 import PostList from '../components/PostList.astro';
 import { getListedPosts } from '../data/blog';
+import { site } from '../data/site';
 import rssIcon from '../assets/rss.svg';
 
 const posts = await getListedPosts();
@@ -12,21 +13,50 @@ const posts = await getListedPosts();
 <Layout>
 	<main>
 		<Hero />
-		<section class="writing" aria-labelledby="writing-heading">
-			<div class="section-head">
-				<h2 id="writing-heading">Writing</h2>
-				<a class="rss-link" href="/rss.xml" aria-label="RSS feed" data-astro-prefetch="hover">
-					<Icon src={rssIcon} size="1.05rem" />
-				</a>
-			</div>
-			<PostList posts={posts} />
+		<section class="home-split" aria-label="About and writing">
+			<section class="bio" aria-labelledby="bio-heading">
+				<div class="section-head">
+					<h2 id="bio-heading">About</h2>
+				</div>
+				<p class="bio-text">{site.bio}</p>
+			</section>
+			<section class="writing" aria-labelledby="writing-heading">
+				<div class="section-head">
+					<h2 id="writing-heading">Writing</h2>
+					<a class="rss-link" href="/rss.xml" aria-label="RSS feed" data-astro-prefetch="hover">
+						<Icon src={rssIcon} size="1.05rem" />
+					</a>
+				</div>
+				<PostList posts={posts} />
+			</section>
 		</section>
 	</main>
 </Layout>
 
 <style>
+	main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+	}
+
+	.home-split {
+		flex: 1;
+		display: grid;
+		grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
+		gap: 0;
+		align-items: stretch;
+		padding: 1.5rem 0;
+	}
+
+	.bio {
+		padding-right: 1.5rem;
+		border-right: 1px solid var(--hairline);
+	}
+
 	.writing {
-		padding: 1.5rem 0 2.5rem;
+		padding-left: 1.5rem;
 	}
 
 	.section-head {
@@ -44,6 +74,15 @@ const posts = await getListedPosts();
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--muted);
+	}
+
+	.bio-text {
+		margin: 0;
+		max-width: 28rem;
+		font-size: 1.05rem;
+		line-height: 1.55;
+		letter-spacing: -0.01em;
+		color: var(--fg);
 	}
 
 	.rss-link {
@@ -65,12 +104,30 @@ const posts = await getListedPosts();
 	}
 
 	@media (max-width: 768px) {
-		.writing {
+		.home-split {
+			grid-template-columns: 1fr;
+			gap: 2rem;
 			padding-top: 1.35rem;
+			padding-bottom: 1.35rem;
+		}
+
+		.bio {
+			padding-right: 0;
+			border-right: none;
+			padding-bottom: 2rem;
+			border-bottom: 1px solid var(--hairline);
+		}
+
+		.writing {
+			padding-left: 0;
 		}
 
 		.section-head {
 			margin-bottom: 1.35rem;
+		}
+
+		.bio-text {
+			max-width: none;
 		}
 	}
 </style>

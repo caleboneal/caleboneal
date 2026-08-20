@@ -1,6 +1,7 @@
 export const site = {
 	name: "Caleb O'Neal",
 	description: "I'm a Computer Engineering student at the University of Virgina. I do systems programming and write about it here sometimes.",
+	bio: "I'm a Computer Engineering student at the University of Virgina. I do systems programming and write about it here sometimes.",
 	url: 'https://caleboneal.dev',
 	ogImage: '/og-default.png',
 	links: {

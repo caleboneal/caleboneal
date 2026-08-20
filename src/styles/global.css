@@ -31,17 +31,17 @@ html[data-theme='dark'] {
 	--hairline: rgba(242, 242, 242, 0.12);
 	--wire: rgba(232, 150, 110, 0.2);
 	--accent-orange: #e8925c;
-	--accent-rose: #e07a88;
+	--accent-rose: #c4a0e8;
 	--accent-orange-soft: rgba(232, 146, 92, 0.16);
-	--accent-rose-soft: rgba(224, 122, 136, 0.14);
+	--accent-rose-soft: rgba(196, 160, 232, 0.14);
 	--pill-bg: transparent;
 	--pill-fg: #f2f2f2;
 	--pill-border: rgba(242, 242, 242, 0.28);
 	--pill-solid-bg: var(--accent-orange);
 	--pill-solid-fg: #1a0e08;
 	--hero-glow: rgba(232, 146, 92, 0.1);
-	--hero-glow-soft: rgba(224, 122, 136, 0.08);
-	--surface-hover: rgba(224, 122, 136, 0.1);
+	--hero-glow-soft: rgba(196, 160, 232, 0.08);
+	--surface-hover: rgba(196, 160, 232, 0.1);
 	color-scheme: dark;
 }
 
