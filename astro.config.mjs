@@ -20,6 +20,11 @@ export default defineConfig({
     }),
   ],
   prefetch: true,
+  server: {
+    allowedHosts: [
+      "caleb-desktop.tail386360.ts.net"
+    ]
+  },
   markdown: {
     shikiConfig: {
       themes: {
