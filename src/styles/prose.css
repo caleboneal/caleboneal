@@ -123,14 +123,11 @@
 	overflow-x: auto;
 	border-radius: 0.65rem;
 	border: 1px solid var(--hairline);
-	background-color: var(--shiki-light-bg);
+
 	font-size: 0.9rem;
 	line-height: 1.55;
 }
 
-html[data-theme='dark'] .prose pre.astro-code {
-	background-color: var(--shiki-dark-bg);
-}
 
 .prose pre code {
 	padding: 0;

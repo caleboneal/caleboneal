@@ -1,16 +1,13 @@
 ---
 import { site } from '../data/site';
-import ThemeToggle from './ThemeToggle.astro';
+
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
 	<p class="copy">© {year} {site.name}</p>
-	<div class="end">
-		<a class="gpg-link" href={site.links.gpg}>GPG key</a>
-		<ThemeToggle />
-	</div>
+	<a class="gpg-link" href={site.links.gpg}>GPG key</a>
 </footer>
 
 <style>
@@ -24,11 +21,6 @@ const year = new Date().getFullYear();
 		border-top: 1px solid var(--hairline);
 	}
 
-	.end {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
 
 	.copy,
 	.gpg-link {
