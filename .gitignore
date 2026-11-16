@@ -7,6 +7,9 @@ dist/
 # dependencies
 node_modules/
 
+# direnv environment cache
+.direnv/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

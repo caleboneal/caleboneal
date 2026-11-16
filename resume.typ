@@ -1,7 +1,7 @@
 #set document(author: "Caleb O'Neal", title: "Caleb O'Neal")
 
 #set text(
-  font: "Calibri",
+  font: "Carlito",
   size: 11pt,
   lang: "en",
   ligatures: false,
